@@ -7,9 +7,9 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlay, faPlus, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 import TestList from "../components/TestList";
 import classNames from "classnames";
-import {updateService} from "../store/modules/service";
-import {updateTests} from "../store/modules/tests";
-import {connect, useDispatch, useSelector} from "react-redux";
+import testReducer, {updateTests} from "../store/modules/tests";
+import {useDispatch, useSelector} from "react-redux";
+import ResultList from "../components/ResultList";
 
 const tabs = {
     Overview: "Overview",
@@ -114,7 +114,10 @@ function TabContainer(props) {
 export function Overview(props) {
     const { service_id } = useParams();
     const dispatch = useDispatch();
-    const [ results, setResults ] = React.useState([]);
+    const { tests } = useSelector(
+        state => state.testReducer.tests,
+        testReducer => (testReducer.tests === tests));
+    console.log(tests);
 
     React.useEffect(() => {
         axios.get(getApiUrl(`v1/tests?web_service_id=${service_id}`), {
@@ -125,6 +128,9 @@ export function Overview(props) {
         }).catch((e) => {
             console.log(e)
         });
+
+    //    TODO: Overview용 resutls API 추가하기
+
     }, [service_id]);
 
     return <div className="columns">
@@ -132,7 +138,12 @@ export function Overview(props) {
             <TestList service_id={service_id} is_short={true}/>
         </div>
         <div className="column is-6">
-            2
+            <ResultList results={[{
+                is_success: true,
+                status_code: 200,
+                response_time: 1000,
+                tested_at: Date.now(),
+            }]}/>
         </div>
     </div>
 }

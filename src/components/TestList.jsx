@@ -4,8 +4,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlay, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import {getApiUrl} from "../helpers/API";
-import {shallowEqual, useDispatch, useSelector} from "react-redux";
-import testReducer, {updateTests} from "../store/modules/tests";
+import {useDispatch, useSelector} from "react-redux";
+import {updateTests} from "../store/modules/tests";
 
 export default function TestList(props) {
     const { service_id, is_short } = props;
@@ -15,7 +15,7 @@ export default function TestList(props) {
     return <div>
         {tests ? tests.map(test => {
             console.log(test);
-            return <TestListItem service_id={service_id} test={test} is_short={is_short} />
+            return <TestListItem key={test.id} service_id={service_id} test={test} is_short={is_short} />
         }) : <div>No tests</div>}
     </div>
 }

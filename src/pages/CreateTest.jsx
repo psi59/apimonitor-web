@@ -4,6 +4,9 @@ import ParameterEditor from "../components/ParameterEditor";
 import {Link, useHistory} from "react-router-dom";
 import {getApiUrl} from "../helpers/API";
 import axios from "axios";
+import {useDispatch, useSelector} from "react-redux";
+import {getWebServiceId} from "../helpers/utils/path";
+import {updateService} from "../store/modules/service";
 
 const methods = {
     get: "GET",
@@ -17,11 +20,25 @@ const methods = {
 const methodValues = Object.values(methods);
 
 export default function CreateTest(props) {
-    const { service } = props;
+    const service_id = getWebServiceId();
+    const service = useSelector(state => state.serviceReducer.service);
     const [ method, setMethod ] = React.useState(methods.get);
     const [ path, setPath ] = React.useState("/");
     const [ queryParams, setQueryParams ] = React.useState(service.query_param);
     const history = useHistory();
+    const dispatch = useDispatch();
+
+    React.useEffect(() => {
+        axios.get(getApiUrl(`v1/webservices/${service_id}`), {
+            withCredentials: true,
+        }).then((res) => {
+            const service = res.data.result;
+            console.log(service);
+            dispatch(updateService(service));
+        }).catch((e) => {
+            console.log(e)
+        });
+    }, [service_id]);
 
 
     const createTest = () => {
