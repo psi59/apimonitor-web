@@ -2,18 +2,19 @@ import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlay} from "@fortawesome/free-solid-svg-icons";
 import classNames from 'classnames';
-import {getFirstLetterOfDomain} from "../helpers/utils/string";
+import Avatar from "./Avatar";
 
 function ServiceListItem(props) {
     return <div className="box">
         <div className="level">
             <div className="level-left">
-                <p className="image is-24x24 has-background-grey-light u-m-r-5 has-text-white has-text-centered">
-                    {props.image ? <img src={props.image} className="level-item"  alt="favicon"/> : getFirstLetterOfDomain(props.host) }
-                </p>
+                <Avatar
+                    image={props.image}
+                    host={props.host}
+                />
                 <div className="level-item">
                     <strong className="title is-4">
-                        <a href={`services/${props.service_id}`}>
+                        <a href={`/services/${props.service_id}`}>
                             {props.host}
                         </a>
                     </strong>
@@ -57,6 +58,7 @@ export default function ServiceList({ services }) {
     return <section className="section">
         {services.map(service => (
             <ServiceListItem
+                key={`service_${service.id}`}
                 service_id={service.id}
                 image={service.favicon}
                 host={service.host}

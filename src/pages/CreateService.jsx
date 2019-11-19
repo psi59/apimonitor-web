@@ -4,7 +4,7 @@ import axios from "axios";
 import {Redirect} from "react-router-dom";
 import classNames from 'classnames';
 
-export default function NewService(props) {
+export default function CreateService(props) {
     const [ host, setHost ] = React.useState("");
     const [ isCreated, setIsCreated ] = React.useState(false);
     const [ isError, setIsError ] = React.useState(false);
