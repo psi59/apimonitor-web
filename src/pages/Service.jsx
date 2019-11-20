@@ -120,7 +120,7 @@ export function Overview(props) {
     console.log(tests);
 
     React.useEffect(() => {
-        axios.get(getApiUrl(`v1/tests?web_service_id=${service_id}`), {
+        axios.get(getApiUrl(`v1/webservices/${service_id}/tests`), {
             withCredentials: true,
         }).then((res) => {
             const { items } = res.data.result;
@@ -155,7 +155,7 @@ function Tests(props) {
 
 
     React.useEffect(() => {
-        axios.get(getApiUrl(`v1/tests?web_service_id=${service_id}`), {
+        axios.get(getApiUrl(`v1/webservices/${service_id}/tests`), {
             withCredentials: true,
         }).then((res) => {
             const { items } = res.data.result;

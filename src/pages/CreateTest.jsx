@@ -42,7 +42,7 @@ export default function CreateTest(props) {
 
 
     const createTest = () => {
-        axios.post(getApiUrl(`v1/tests?web_service_id=${service.id}`), {
+        axios.post(getApiUrl(`v1/webservices/${service.id}/tests`), {
             path: path,
             http_method: method,
             content_type: "application/json",
