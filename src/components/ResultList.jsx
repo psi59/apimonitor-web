@@ -9,7 +9,7 @@ export default function ResultList(props) {
     const { results } = props;
 
     return <div>
-        { results.map(result => (<ResultListItem result={result}/>)) }
+        { results.length > 0 ? results.map(result => (<ResultListItem result={result}/>)) : <div> No Results</div>}
     </div>
 }
 

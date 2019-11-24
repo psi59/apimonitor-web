@@ -7,9 +7,10 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlay, faPlus, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 import TestList from "../components/TestList";
 import classNames from "classnames";
-import testReducer, {updateTests} from "../store/modules/tests";
+import {updateTests} from "../store/modules/tests";
 import {useDispatch, useSelector} from "react-redux";
 import ResultList from "../components/ResultList";
+import {updateResults} from "../store/modules/result";
 
 const tabs = {
     Overview: "Overview",
@@ -114,10 +115,11 @@ function TabContainer(props) {
 export function Overview(props) {
     const { service_id } = useParams();
     const dispatch = useDispatch();
-    const { tests } = useSelector(
-        state => state.testReducer.tests,
+    const { tests, results } = useSelector(
+        state => ({tests: state.testReducer.tests, results: state.resultReducer.results}),
         testReducer => (testReducer.tests === tests));
     console.log(tests);
+    console.log(results);
 
     React.useEffect(() => {
         axios.get(getApiUrl(`v1/webservices/${service_id}/tests`), {
@@ -129,8 +131,15 @@ export function Overview(props) {
             console.log(e)
         });
 
-    //    TODO: Overview용 resutls API 추가하기
-
+        axios.get(getApiUrl(`v1/webservices/${service_id}/results`), {
+            withCredentials: true,
+        }).then((res) => {
+            const { items } = res.data.result;
+            console.log(items);
+            dispatch(updateResults(items));
+        }).catch((e) => {
+            console.log(e)
+        });
     }, [service_id]);
 
     return <div className="columns">
@@ -138,12 +147,7 @@ export function Overview(props) {
             <TestList service_id={service_id} is_short={true}/>
         </div>
         <div className="column is-6">
-            <ResultList results={[{
-                is_success: true,
-                status_code: 200,
-                response_time: 1000,
-                tested_at: Date.now(),
-            }]}/>
+            <ResultList results={results}/>
         </div>
     </div>
 }

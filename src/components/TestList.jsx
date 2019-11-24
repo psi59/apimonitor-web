@@ -56,11 +56,11 @@ function TestListItem(props) {
     return <div className="box">
         <div className="level">
             <div className="level-left">
-                <span className="u-m-r-10">
-                    <strong>{test.path}</strong>
-                </span>
-                <span className={classNames("tag", "is-normal", getMethodColorClass(test.http_method))}>
+                <span className={classNames("tag", "is-normal", "u-m-r-10", getMethodColorClass(test.http_method))}>
                     {test.http_method}
+                </span>
+                <span>
+                    <strong><a href={`/tests/${test.id}`}>{test.path}</a></strong>
                 </span>
             </div>
             <div className="level-right">
