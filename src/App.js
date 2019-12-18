@@ -16,6 +16,7 @@ import CreateService from "./pages/CreateService";
 import {faGithub} from "@fortawesome/free-brands-svg-icons";
 import ServiceContainer from "./containers/ServiceContainer";
 import CreateTest from "./pages/CreateTest";
+import Test from "./pages/Tests";
 
 function App() {
   return (
@@ -44,10 +45,11 @@ function App() {
       <hr className="u-m-t-0 u-m-b-0"/>
       <Router>
         <Switch>
-          <Route path="/services/new" exact children={ <CreateService /> } />
-          <Route path="/services/:service_id" strict exact children={ <ServiceContainer /> }/>
+            <Route path="/services/new" exact children={ <CreateService /> } />
+            <Route path="/services/:service_id" strict exact children={ <ServiceContainer /> }/>
             <Route path="/services/:service_id/tests/new" strict exact children={ <CreateTest /> }/>
-          <Route path="/" exact children={ <Home/> } />
+            <Route path="/tests/:test_id" strict exact children={ <Test /> }/>
+            <Route path="/" exact children={ <Home/> } />
         </Switch>
       </Router>
       <footer className="footer">

@@ -5,9 +5,11 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChevronDown} from "@fortawesome/free-solid-svg-icons";
 
 export default function Dropdown(props) {
-    const { items, width, setValue } = props;
+    const { items, width, setValue, value } = props;
     const [ isActive, setIsActive ] = React.useState(false);
-    const [ selectedItem, setSelectedItem ] = React.useState(items[0]);
+    console.log(value);
+    const [ selectedItem, setSelectedItem ] = React.useState(value ? value : items[0]);
+
     console.log(width);
 
     const setDropdownActive = (isActive) => () => {

@@ -8,7 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getWebServiceId} from "../helpers/utils/path";
 import {updateService} from "../store/modules/service";
 
-const methods = {
+export const methods = {
     get: "GET",
     put: "PUT",
     post: "POST",
@@ -17,7 +17,7 @@ const methods = {
     head: "HEAD"
 };
 
-const methodValues = Object.values(methods);
+export const methodValues = Object.values(methods);
 
 export default function CreateTest(props) {
     const service_id = getWebServiceId();
@@ -42,7 +42,7 @@ export default function CreateTest(props) {
 
 
     const createTest = () => {
-        axios.post(getApiUrl(`v1/webservices/${service.id}/tests`), {
+        axios.put(getApiUrl(`v1/webservices/${service.id}/tests`), {
             path: path,
             http_method: method,
             content_type: "application/json",
