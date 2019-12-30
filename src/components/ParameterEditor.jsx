@@ -1,7 +1,4 @@
 import React from 'react';
-import {faTrashAlt} from "@fortawesome/free-regular-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCheck} from "@fortawesome/free-solid-svg-icons";
 
 export default function ParameterEditor(props) {
     const { title, parameters, setParametersFunc } = props;

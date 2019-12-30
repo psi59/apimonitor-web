@@ -10,49 +10,50 @@ import {faPlay, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 import ResultList from "../components/ResultList";
 import TestSettingPanel from "../components/TestSettingPanel";
 import {useDispatch} from "react-redux";
-import {updateTest as updateTestState} from "../store/modules/tests";
+import {updateTest as updateTestInStore} from "../store/modules/tests";
 
-export default function Test(props) {
+export default function Test() {
     const dispatch = useDispatch();
     const [ test, setTest ] = React.useState({});
     const [ results, setResults ] = React.useState([]);
     const [ service, setService ] = React.useState({});
     const { test_id } = useParams();
 
-    const updateTest = (event) => {
+    console.log("test");
+
+    const updateTest = async () => {
         console.log(test);
-        axios.put(getApiUrl(`v1/tests/${test.id}`), test).then((res) => {
-            dispatch(updateTestState(test));
+        try {
+            const res = await axios.put(getApiUrl(`v1/tests/${test.id}`), test);
+            await dispatch(updateTestInStore(test));
             console.log(res);
-        }).catch(error => {
+        } catch (error) {
             console.log(error.response);
-        });
+        }
     };
 
-    React.useEffect(function () {
-        axios.get(getApiUrl(`v1/tests/${test_id}`), {
+    const init = async () => {
+        const testsRes = await axios.get(getApiUrl(`v1/tests/${test_id}`), {
             withCredentials: true,
-        }).then((res) => {
-            const test = res.data.result;
-            const { web_service } = test;
-            console.log(test);
-            setTest(test);
-            dispatch(updateTestState(test));
-            setService(web_service);
-        }).catch(function (e) {
-            console.log(e);
         });
-    }, []);
+        console.log(testsRes);
+        const test = testsRes.data.result;
+        const { web_service } = test;
+        console.log(test);
+        setTest(test);
+        dispatch(updateTestInStore(test));
+        setService(web_service);
 
-    React.useEffect(function () {
-        axios.get(getApiUrl(`v1/tests/${test_id}/results?web_service_id=${service.id}`), {
+        const resultsRes = await axios.get(getApiUrl(`v1/tests/${test_id}/results?web_service_id=${service.id}`), {
             withCredentials: true,
-        }).then((res) => {
-            const { items } = res.data.result;
-            setResults(items);
-        }).catch((e) => {
-            console.log(e)
         });
+        console.log(resultsRes);
+        const { items } = resultsRes.data.result;
+        setResults(items);
+    };
+
+    React.useEffect( () => {
+        init();
     }, []);
 
     return <div>

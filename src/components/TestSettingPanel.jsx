@@ -2,24 +2,108 @@ import React from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheckCircle, faEdit, faPlus, faTimesCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
 import classNames from 'classnames';
-import {useDispatch, useSelector} from "react-redux";
+import {connect, useDispatch, useSelector} from "react-redux";
+import {updateTest} from "../helpers/API";
+import {updateTest as updateTestInStore} from "../store/modules/tests";
 
+export default function TestSettingPanel() {
+    const test = useSelector(state => (state.testReducer.test));
+    console.log("test=", test);
 
-export default function TestSettingPanel(props) {
-    const { test } = props;
     return <div>
-        <ParameterPanel header="Header parameters" parameters={{
-            "test1": "value1",
-            "test2": "value2"
-        }} />
-        <ParameterPanel header="Query parameters" />
-        <ParameterPanel header="Request body" />
+        <ParameterPanel
+            header="Header parameters"
+            parameter={{
+                type: "header",
+                data: test.header ? test.header : {}
+            }}
+            test={test}
+        />
+        <ParameterPanel
+            header="Query parameters"
+            parameter={{
+                type: "query_param",
+                data: test.query_param ? test.query_param: {}
+            }}
+            test={test}
+        />
+        <ParameterPanel
+            header="Request body"
+            parameter={{
+                type: "request_data",
+                data: test.request_data ? test.request_data: {}
+            }}
+            test={test}
+        />
     </div>
 }
 
 function ParameterPanel(props) {
-    const {header} = props;
-    const [ parameters, setParameters] = React.useState(props.parameters ? props.parameters : {});
+    const { header, parameter, test } = props;
+    const parameterType = parameter.type;
+    console.log("parameterType=", parameterType);
+    const parameterData = parameter.data;
+    console.log("parameterData=", parameterData);
+    const parameterEntries = parameterData ? Object.entries(parameterData) : [];
+    console.log("parameterEntries=", parameterEntries);
+    const [ parameterProperties, setParameterProperties ] = React.useState([...parameterEntries]);
+    const [ parameterToAdd, setParameterToAdd ] = React.useState([]);
+    const dispatch = useDispatch();
+
+    const updateTestWithParameters = async (params) => {
+        try {
+            let newTest = test;
+            delete newTest[parameterType];
+            newTest[parameterType] = params;
+            const res = await updateTest(newTest);
+            console.log("newTest=", newTest);
+            dispatch(updateTestInStore(newTest));
+            setParameterProperties(Object.entries(params));
+            console.log(res);
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    const deleteParameter = (key) => () => {
+        let newParams = parameterData;
+        delete newParams[key];
+        updateTestWithParameters(newParams);
+    };
+
+    const updateParameter = (k)  => (key, value) => {
+        let newParams = parameterData;
+        if (k) {
+            delete newParams[k];
+            console.log(`deleted k=${k}: `, newParams);
+        }
+        newParams[key] = value;
+        console.log(`added key=${key}: `, newParams);
+        updateTestWithParameters(newParams);
+    };
+
+    const getEditorList = (parameter= []) => {
+        console.log("parameter=", parameter);
+        return parameter.map(([k, v]) => <KeyValueEditor
+            key={k}
+            k={k}
+            v={v}
+            onUpdate={updateParameter(k)}
+            onDelete={deleteParameter(k)}
+        />)
+    };
+
+    const getAddEditorList = (parameter = []) =>
+        parameter.map((k, i) => (<KeyValueEditor
+            key={`add_editor_${i}`}
+            k={""}
+            v={""}
+            onUpdate={(key, value) => {
+                const updateParameterFn = updateParameter("");
+                updateParameterFn(key, value);
+            }}
+            isActive={true}
+        />));
 
     return <div className="card u-m-b-10">
         <div className="card-header">
@@ -27,16 +111,30 @@ function ParameterPanel(props) {
         </div>
 
         <div className="card-content">
-            <Parameters parameters={parameters} />
+            <div className="container">
+                <p className={classNames("has-text-centered", "has-text-grey", (parameterProperties.length ? "is-hidden":""))}>No parameters</p>
+                {getEditorList(parameterProperties)}
+                <div className={parameterData ? "is-hidden":""}>
+
+                </div>
+                {getAddEditorList(Object.keys(parameterToAdd))}
+            </div>
         </div>
 
         <div className="card-footer">
             <div className="card-footer-item">
-                <button className="button is-success is-small" style={{
-                    width: "30px",
-                    height: "30px",
-                    borderRadius: '9999px',
-                }}>
+                <button
+                    className="button is-success is-small"
+                    style={{
+                        width: "30px",
+                        height: "30px",
+                        borderRadius: '9999px',
+                    }}
+                    onClick={() => {
+                        setParameterToAdd([...parameterToAdd, ""]);
+                        console.log("parameterToAdd=", parameterToAdd);
+                    }}
+                >
                     <FontAwesomeIcon icon={faPlus} />
                 </button>
             </div>
@@ -44,23 +142,13 @@ function ParameterPanel(props) {
     </div>
 }
 
-function Parameters(props) {
-    const [ parameters, setParameters ] = React.useState(props.parameters ? props.parameters : {});
-    const parameterKeys = Object.keys(parameters);
-    console.log(parameterKeys);
-
-    return <div>
-        <div className="container">
-            <p className={classNames("has-text-centered", "has-text-grey", (parameterKeys.length > 0 ? "is-hidden":""))}>No parameters</p>
-            {parameterKeys.map(key => <KeyValueEditor k={key} v={parameters[key]} />)}
-        </div>
-    </div>
-}
-
 function KeyValueEditor(props) {
-    const { k, v } = props;
+    const { k, v, onUpdate, onDelete } = props;
+    console.log(props);
+    console.log(`k=${k},v=${v}`);
     const [ key, setKey ] = React.useState(k);
     const [ value, setValue ] = React.useState(v);
+    console.log(`key=${key},value=${value}`);
     const [ active, setActive ] = React.useState(props.isActive ? props.isActive : false);
     const { test } = useSelector(
         state => ({test: state.testReducer.test}),
@@ -82,9 +170,12 @@ function KeyValueEditor(props) {
         setActive(false);
     };
 
-    const onCancel = () => {
-        setKey(k);
-        setValue(v);
+    const updateParameter = () => {
+        onUpdate(key, value);
+        deactivateEditor();
+    };
+
+    const cancel = () => {
         deactivateEditor();
     };
 
@@ -96,12 +187,12 @@ function KeyValueEditor(props) {
                 <input className="input" placeholder="Value" value={value} onChange={changeValueOnType} />
             </div>
             <div className="control">
-                <a className="button is-success">
+                <a className="button is-success" onClick={updateParameter}>
                     <FontAwesomeIcon icon={faCheckCircle} />
                 </a>
             </div>
             <div className="control">
-                <a className="button is-danger" onClick={onCancel}>
+                <a className="button is-danger" onClick={cancel}>
                     <FontAwesomeIcon icon={faTimesCircle} />
                 </a>
             </div>
@@ -113,7 +204,7 @@ function KeyValueEditor(props) {
                     </label>
                 </div>
                 <div className="level-item is-italic has-text-black is-bold">
-                    {`${key}: ${value}`}
+                    {`${k}: ${v}`}
                 </div>
             </div>
             <div className="level-right">
@@ -129,9 +220,13 @@ function KeyValueEditor(props) {
                     </a>
                 </div>
                 <div className="level-item">
-                    <a className="has-text-grey-dark" style={{
-                        fontSize: "13px"
-                    }}>
+                    <a
+                        className="has-text-grey-dark"
+                        style={{
+                            fontSize: "13px"
+                        }}
+                        onClick={onDelete}
+                    >
                         <FontAwesomeIcon icon={faTrash} />
                     </a>
                 </div>

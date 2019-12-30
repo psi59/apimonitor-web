@@ -17,6 +17,7 @@ export default function testReducer(state=initialState, action) {
                 tests: action.tests
             };
         case UPDATE_TEST:
+            console.log("update_test: ", action.test);
             return {
                 ...state,
                 test: action.test

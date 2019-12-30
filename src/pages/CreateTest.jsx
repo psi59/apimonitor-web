@@ -38,7 +38,7 @@ export default function CreateTest(props) {
         }).catch((e) => {
             console.log(e)
         });
-    }, [service_id]);
+    });
 
 
     const createTest = () => {
