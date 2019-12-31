@@ -1,6 +1,6 @@
 import * as React from "react";
-import ServiceContainer from "../containers/ServiceListContainer";
 import {Link} from "react-router-dom";
+import ServiceListContainer from "../containers/ServiceListContainer";
 
 class Home extends React.Component{
     render() {
@@ -20,7 +20,7 @@ class Home extends React.Component{
                         </div>
                     </div>
                 </section>
-                <ServiceContainer />
+                <ServiceListContainer />
             </div>
         )
     }

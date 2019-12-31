@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@babel/core": "7.6.0",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-proposal-decorators": "^7.7.4",
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
     "@fortawesome/free-brands-svg-icons": "^5.11.2",
     "@fortawesome/free-regular-svg-icons": "^5.11.2",
@@ -50,6 +52,9 @@
     "postcss-normalize": "7.0.1",
     "postcss-preset-env": "6.7.0",
     "postcss-safe-parser": "4.0.1",
+    "mobx": "^5.15.1",
+    "mobx-react": "^6.1.4",
+    "mobx-utils": "^5.5.2",
     "react": "^16.11.0",
     "react-app-polyfill": "^1.0.4",
     "react-dev-utils": "^9.1.0",
@@ -143,6 +148,10 @@
   "babel": {
     "presets": [
       "react-app"
+    ],
+    "plugins": [
+      ["@babel/plugin-proposal-decorators", { "legacy": true}],
+      ["@babel/plugin-proposal-class-properties", { "loose": true}]
     ]
   }
 }
