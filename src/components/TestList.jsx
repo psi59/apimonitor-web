@@ -2,30 +2,39 @@ import React from 'react'
 import classNames from "classnames";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlay, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
-import {getApiUrl} from "../helpers/API";
-import {useDispatch, useSelector} from "react-redux";
-import {updateTests} from "../store/modules/tests";
+import {inject, observer} from "mobx-react";
+import autobind from "autobind-decorator";
+import {getWebServiceId} from "../helpers/utils/path";
+import {observable} from "mobx";
 
-export default function TestList(props) {
-    const { service_id, is_short } = props;
-    const tests = useSelector(state => state.testReducer.tests, testReducer => (tests.length === testReducer.tests));
-    console.log(tests);
-
-    return <div>
-        {tests ? tests.map(test => {
-            console.log(test);
-            return <TestListItem key={test.id} service_id={service_id} test={test} is_short={is_short} />
-        }) : <div>No tests</div>}
-    </div>
+class TestList extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        const { tests, isShort } = this.props;
+        console.log("tests=", tests);
+        return (
+             <div>
+                 {observable.array(tests).length ? tests.map(test => {
+                     return <TestListItem key={test.id} test={test} isShort={isShort} />
+                 }) : <div>No tests</div>}
+             </div>
+        );
+    }
 }
 
-function TestListItem(props) {
-    const { service_id, test, is_short } = props;
-    const tests = useSelector(state => state.testReducer.tests);
-    const dispatch = useDispatch();
+export default TestList;
 
-    const getMethodColorClass = (method) => {
+@inject("testStore")
+@observer
+@autobind
+class TestListItem extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    getMethodColorClass = (method) => {
         switch (method) {
             case "GET":
                 return "is-success";
@@ -40,44 +49,46 @@ function TestListItem(props) {
         }
     };
 
-    const deleteTest = () => {
-        axios.delete(getApiUrl(`v1/tests/${test.id}?web_service_id=${service_id}`), {
-            withCredentials: true,
-        }).then((res) => {
-            console.log(res);
-            const i = tests.indexOf(test);
-            tests.splice(i, 1);
-            dispatch(updateTests(tests))
-        }).catch((e) => {
-            console.log(e)
-        });
+    deleteTest = () => {
+        const { testStore, test } = this.props;
+        const webServiceId = getWebServiceId();
+
+        if (testStore.deleteOne(webServiceId, test.id)) {
+            testStore.removeTestsByTest(test);
+        }
     };
 
-    return <div className="box">
-        <div className="level">
-            <div className="level-left">
-                <span className={classNames("tag", "is-normal", "u-m-r-10", getMethodColorClass(test.http_method))}>
+    render() {
+        const {test, isShort} = this.props;
+
+        return (
+            <div className="box">
+                <div className="level">
+                    <div className="level-left">
+                <span className={classNames("tag", "is-normal", "u-m-r-10", this.getMethodColorClass(test.http_method))}>
                     {test.http_method}
                 </span>
-                <span>
+                        <span>
                     <strong><a href={`/tests/${test.id}`}>{test.path}</a></strong>
                 </span>
-            </div>
-            <div className="level-right">
-                <div className="level-item">
-                    <button className="button is-text is-small has-text-success">
-                        <FontAwesomeIcon icon={faPlay} />
-                    </button>
+                    </div>
+                    <div className="level-right">
+                        <div className="level-item">
+                            <button className="button is-text is-small has-text-success">
+                                <FontAwesomeIcon icon={faPlay} />
+                            </button>
+                        </div>
+                        <div className="level-item">
+                            <button className="button is-text is-small has-text-danger" onClick={this.deleteTest}>
+                                <FontAwesomeIcon icon={faTrashAlt} />
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div className="level-item">
-                    <button className="button is-text is-small has-text-danger" onClick={deleteTest}>
-                        <FontAwesomeIcon icon={faTrashAlt} />
-                    </button>
-                </div>
+                {isShort ? null : <div className="has-text-left">
+                    <p className="has-text-grey">{test.desc ? test.desc : "no description"}</p>
+                </div> }
             </div>
-        </div>
-        {is_short ? null : <div className="has-text-left">
-            <p className="has-text-grey">{test.desc ? test.desc : "no description"}</p>
-        </div> }
-    </div>;
+        );
+    }
 }

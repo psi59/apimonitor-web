@@ -2,12 +2,13 @@ import React from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheckCircle} from "@fortawesome/free-solid-svg-icons";
 import {faTimesCircle} from "@fortawesome/free-regular-svg-icons";
+import {observable} from "mobx";
 
 export default function ResultList(props) {
     const { results } = props;
 
     return <div>
-        { results.length > 0 ? results.map(result => (<ResultListItem result={result}/>)) : <div> No Results</div>}
+        { observable.array(results).length > 0 ? results.map(result => (<ResultListItem result={result}/>)) : <div> No Results</div>}
     </div>
 }
 

@@ -3,6 +3,40 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlay} from "@fortawesome/free-solid-svg-icons";
 import classNames from 'classnames';
 import Avatar from "./Avatar";
+import {inject, observer} from "mobx-react";
+import autobind from "autobind-decorator";
+
+@inject("webServiceStore")
+@observer
+@autobind
+class ServiceList extends React.Component {
+    constructor(props) {
+        super(props);
+        const { webServiceStore } = this.props;
+        webServiceStore.findAll();
+    }
+
+    render() {
+        const { webServiceList } = this.props.webServiceStore;
+        return (
+            <section className="section">
+                {webServiceList.items.map(webService => (
+                    <ServiceListItem
+                        key={`webService_${webService.id}`}
+                        service_id={webService.id}
+                        image={webService.favicon}
+                        host={webService.host}
+                        http_schema={webService.http_schema}
+                        schedule={webService.schedule}
+                        desc={webService.desc}
+                    />
+                ))}
+            </section>
+        );
+    }
+}
+
+export default ServiceList;
 
 function ServiceListItem(props) {
     return <div className="box">
@@ -52,20 +86,4 @@ function ServiceListItem(props) {
             </span>
         </div>
     </div>
-}
-
-export default function ServiceList({ services }) {
-    return <section className="section">
-        {services.map(service => (
-            <ServiceListItem
-                key={`service_${service.id}`}
-                service_id={service.id}
-                image={service.favicon}
-                host={service.host}
-                http_schema={service.http_schema}
-                schedule={service.schedule}
-                desc={service.desc}
-            />
-        ))}
-    </section>
 }

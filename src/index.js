@@ -3,18 +3,17 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {createStore} from "redux";
-import rootReducer from './store/modules'
 import {Provider} from "mobx-react";
 import webServiceStore from "./stores/WebServiceStore";
-
-const devTools =
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
-const store = createStore(rootReducer, devTools);
-console.log(store.getState());
+import testStore from "./stores/TestsStore";
+import resultStore from "./stores/ResultStore";
 
 ReactDOM.render(
-    <Provider store={webServiceStore}>
+    <Provider
+        webServiceStore={webServiceStore}
+        testStore={testStore}
+        resultStore={resultStore}
+    >
         <App />
     </Provider>,
     document.getElementById('root')
