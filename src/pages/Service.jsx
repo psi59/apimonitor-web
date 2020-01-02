@@ -6,7 +6,6 @@ import {faPlay, faPlus, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 import TestList from "../components/TestList";
 import classNames from "classnames";
 import {inject, observer} from "mobx-react";
-import autobind from "autobind-decorator";
 import queryString from "query-string";
 import {getWebServiceId} from "../helpers/utils/path";
 import ResultList from "../components/ResultList";
@@ -21,7 +20,6 @@ const tabs = {
     "testStore"
 )
 @observer
-@autobind
 class Service extends React.Component {
     constructor(props) {
         super(props);
@@ -152,7 +150,6 @@ class TabContainer extends React.Component {
     "resultStore"
 )
 @observer
-@autobind
 class Overview extends React.Component {
     constructor(props) {
         super(props);
@@ -222,7 +219,6 @@ class Overview extends React.Component {
     "testStore",
 )
 @observer
-@autobind
 class Tests extends React.Component {
     constructor(props) {
         super(props);

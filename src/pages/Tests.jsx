@@ -6,7 +6,6 @@ import Avatar from "../components/Avatar";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlay, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 import {inject, observer} from "mobx-react";
-import autobind from "autobind-decorator";
 import ResultList from "../components/ResultList";
 import TestSettingPanel from "../components/TestSettingPanel";
 
@@ -15,7 +14,6 @@ import TestSettingPanel from "../components/TestSettingPanel";
     "resultStore"
 )
 @observer
-@autobind
 class Test extends React.Component {
     constructor(props) {
         super(props);

@@ -3,7 +3,6 @@ import classNames from "classnames";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlay, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 import {inject, observer} from "mobx-react";
-import autobind from "autobind-decorator";
 import {getWebServiceId} from "../helpers/utils/path";
 import {observable} from "mobx";
 
@@ -28,7 +27,6 @@ export default TestList;
 
 @inject("testStore")
 @observer
-@autobind
 class TestListItem extends React.Component {
     constructor(props) {
         super(props);

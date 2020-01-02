@@ -54,12 +54,10 @@ class ParameterPanel extends React.Component {
     deleteParameterInNewParameters = key => {
         console.log("deleted key=", key);
         let newParameter = this.state.newParameters;
-        const idx = newParameter.indexOf(key);
-        console.log("idx=", idx);
-        if (idx > -1) newParameter.splice(idx, 1);
         this.setState({
-            newParameters: newParameter
+            newParameters: newParameter.filter(k => k !== key),
         })
+        console.log("newParameters=", this.state.newParameters);
     };
 
     render() {

@@ -4,11 +4,9 @@ import {faPlay} from "@fortawesome/free-solid-svg-icons";
 import classNames from 'classnames';
 import Avatar from "./Avatar";
 import {inject, observer} from "mobx-react";
-import autobind from "autobind-decorator";
 
 @inject("webServiceStore")
 @observer
-@autobind
 class ServiceList extends React.Component {
     constructor(props) {
         super(props);

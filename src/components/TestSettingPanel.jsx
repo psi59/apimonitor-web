@@ -1,13 +1,11 @@
 import React from 'react';
 import {inject, observer} from "mobx-react";
-import autobind from "autobind-decorator";
 import ParameterPanel from "./ParameterPanel";
 
 @inject(
     "testStore"
 )
 @observer
-@autobind
 class TestSettingPanel extends React.Component {
     constructor(props) {
         super(props);
