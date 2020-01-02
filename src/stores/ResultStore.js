@@ -2,7 +2,7 @@ import {observable} from "mobx";
 import {asyncAction} from "mobx-utils";
 import resultStore from "./repositories/ResultRepository";
 import autobind from "autobind-decorator";
-import {ResultListItemModel, ResultListModel} from "./models/Result";
+import ResultListModel from "./models/ResultListModel";
 
 @autobind
 class ResultStore {
@@ -22,16 +22,19 @@ class ResultStore {
         if (!success) {
             console.log("API Error")
         }
+        console.log("resultList=", data);
+        this.resultList = new ResultListModel(result);
+    }
 
-        this.resultList = {
-            totalCount: result.total_count,
-            totalPage: result.total_page,
-            currentPage: result.current_page,
-            hasNextPage: result.has_next_page,
-            items: result.items.map(data => new ResultListItemModel(data)),
-        };
-
-        console.log("resultList=", this.resultList);
+    @asyncAction
+    async *findByTestId(testId, params) {
+        const { data, status } = yield resultStore.findByTestId(testId, params);
+        console.log("resultList=", data);
+        const { success, result } = data;
+        if (!success) {
+            console.log("API Error")
+        }
+        this.resultList = new ResultListModel(result);
     }
 }
 

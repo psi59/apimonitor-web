@@ -65,8 +65,8 @@ class TestListItem extends React.Component {
             <div className="box">
                 <div className="level">
                     <div className="level-left">
-                <span className={classNames("tag", "is-normal", "u-m-r-10", this.getMethodColorClass(test.http_method))}>
-                    {test.http_method}
+                <span className={classNames("tag", "is-normal", "u-m-r-10", this.getMethodColorClass(test.httpMethod))}>
+                    {test.httpMethod}
                 </span>
                         <span>
                     <strong><a href={`/tests/${test.id}`}>{test.path}</a></strong>

@@ -48,7 +48,7 @@ function App() {
             <Route path="/services/new" exact children={ <CreateService /> } />
             <Route path="/services/:service_id" strict exact children={ <Service /> }/>
             <Route path="/services/:service_id/tests/new" strict exact children={ <CreateTest /> }/>
-            <Route path="/tests/:test_id" strict exact children={ <Test /> }/>
+            <Route path="/tests/:testId" strict exact children={ <Test /> }/>
             <Route path="/" exact children={ <Home/> } />
         </Switch>
       </Router>

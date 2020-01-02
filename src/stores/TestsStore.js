@@ -2,18 +2,22 @@ import {action, observable} from "mobx";
 import autobind from "autobind-decorator";
 import {asyncAction} from "mobx-utils";
 import testRepository from "./repositories/TestsRepository";
-import {TestListItemModel, TestListModel} from "./models/Tests";
+import TestListModel from "./models/TestListModel";
+import TestModel from "./models/TestModel";
+import TestListItemModel from "./models/TestListItemModel";
+import Test from "../pages/Tests";
 
 @autobind
 class TestStore {
     @observable testList = new TestListModel();
+    @observable test = new TestModel();
 
     constructor(rootStore) {
         this.rootStore = rootStore;
         console.log("created TestStore")
     }
 
-    @asyncAction *findAll(service_id) {
+    @asyncAction async *findAll(service_id) {
         try {
             const { data, status } = yield testRepository.findAll(service_id);
             console.log(data);
@@ -21,13 +25,7 @@ class TestStore {
             if (!success)
                 console.log("API Error");
             else {
-                this.testList = {
-                    totalCount: result.total_count,
-                    totalPage: result.total_page,
-                    currentPage: result.current_page,
-                    hasNextPage: result.has_next_page,
-                    items: result.items.map(data => new TestListItemModel(data)),
-                };
+                this.testList = new TestListModel(result);
                 console.log("testList=", this.testList);
             }
         } catch (e) {
@@ -35,7 +33,7 @@ class TestStore {
         }
     }
 
-    @asyncAction *deleteOne(service_id, test_id) {
+    @asyncAction async *deleteOne(service_id, test_id) {
         try {
             const { data, status } = yield testRepository.deleteOne(service_id, test_id);
             const { success, result } = data;
@@ -50,11 +48,59 @@ class TestStore {
         }
     }
 
+    @asyncAction async *findById(testId, params) {
+        try {
+            const { data, status } = yield testRepository.findById(testId);
+            const { success, result } = data;
+            if (!success) {
+                console.log("API Error");
+                return null;
+            }
+            console.log(data);
+            this.test = new TestModel(result);
+            return this.test;
+        } catch (e) {
+            console.log("API Error: ", e);
+            return null;
+        }
+    }
+
+    @asyncAction async *updateOne(test) {
+        try {
+            const { data, status } = yield testRepository.updateOne(test);
+            if (status !== 200) {
+                console.log("API Error");
+                return false;
+            }
+            const { success, result } = data;
+            console.log("updateOne=", data);
+            // this.test = new TestModel(test);
+            return true;
+        } catch (e) {
+            console.log("API Error: ", e);
+            return false;
+        }
+    }
+
     @action removeTestsByTest(test) {
         this.testList.items.remove(test);
         this.testList = {
           ...this.testList,
         };
+    }
+
+    @action updateHttpMethod(httpMethod) {
+        this.test = new TestModel({
+            ...this.test,
+            httpMethod: httpMethod,
+        });
+    }
+
+    @action updatePath(path) {
+        this.test = new TestModel({
+            ...this.test,
+            path: path,
+        });
     }
 }
 

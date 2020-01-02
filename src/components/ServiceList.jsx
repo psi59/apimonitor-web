@@ -26,7 +26,7 @@ class ServiceList extends React.Component {
                         service_id={webService.id}
                         image={webService.favicon}
                         host={webService.host}
-                        http_schema={webService.http_schema}
+                        http_schema={webService.httpSchema}
                         schedule={webService.schedule}
                         desc={webService.desc}
                     />

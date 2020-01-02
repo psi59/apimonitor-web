@@ -1,8 +1,9 @@
-import {computed, observable, reaction} from "mobx";
+import {observable} from "mobx";
 import {asyncAction} from "mobx-utils";
 import webServiceRepository from "./repositories/WebServiceRepository";
-import WebServiceModel, {WebServiceListModel} from "./models/WebService";
 import autobind from "autobind-decorator";
+import {WebServiceListModel} from "./models/WebServiceListModel";
+import WebServiceModel from "./models/WebServiceModel";
 
 @autobind
 class WebServiceStore {
@@ -36,14 +37,7 @@ class WebServiceStore {
         if (!success) {
             console.log("API Error")
         }
-
-        this.webServiceList = {
-            totalCount: result.total_count,
-            totalPage: result.total_page,
-            currentPage: result.current_page,
-            hasNextPage: result.has_next_page,
-            items: result.items.map(data => new WebServiceModel(data)),
-        };
+        this.webServiceList = new WebServiceListModel(result);
 
         console.log("webServiceList=", this.webServiceList);
     }

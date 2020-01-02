@@ -1,14 +1,18 @@
 import axios from "axios";
 
 class ResultRepository {
-    URL = "http://localhost:1323/v1/results";
+    Host = "http://localhost:1323/v1";
 
     constructor(url) {
-        this.URL = this.URL || url;
+        this.Host = this.Host || url;
     }
 
     findByWebServiceId(webServiceId, params) {
-        return axios.get(`${this.URL}?web_service_id=${webServiceId}`, params);
+        return axios.get(`${this.Host}/webservices/${webServiceId}/results`, params);
+    }
+
+    findByTestId(testId, params) {
+        return axios.get(`${this.Host}/tests/${testId}/results`, params);
     }
 }
 
