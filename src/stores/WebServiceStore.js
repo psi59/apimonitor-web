@@ -1,4 +1,4 @@
-import {flow, observable} from "mobx";
+import {action, flow, observable} from "mobx";
 import {asyncAction} from "mobx-utils";
 import webServiceRepository from "./repositories/WebServiceRepository";
 import autobind from "autobind-decorator";
@@ -19,39 +19,52 @@ class WebServiceStore {
         console.log("created WebServiceStore")
     }
 
-    @asyncAction
-    async *findOne(id) {
-        const {data, status} = yield webServiceRepository.findOne(id);
-        console.log(data);
-        const { success, result } = data;
-        if (!success) {
-            console.log("API Error")
+    findOne = flow(function*(id) {
+        try {
+            const {data, status} = yield webServiceRepository.findOne(id);
+            console.log(data);
+            const { success, result } = data;
+            if (!success) {
+                console.log("API Error")
+            }
+            this.webService = new WebServiceModel(result);
+            return new RepositoryResponseModel(data, status);
+        } catch (e) {
+            console.log("API Error", e.response);
+            const { data, status } = e.response;
+            return new RepositoryResponseModel(data, status);
         }
-        this.webService = new WebServiceModel(result);
-    }
+    });
 
-    @asyncAction
-    async *findAll(params) {
-        const { data, status } = yield webServiceRepository.findAll(params);
-        console.log(data);
-        const { success, result } = data;
-        if (!success) {
-            console.log("API Error")
+    findAll = flow(function*(params) {
+        try {
+            const { data, status } = yield webServiceRepository.findAll(params);
+            console.log(data);
+            const { success, result } = data;
+            if (!success) {
+                console.log("API Error")
+            }
+            this.webServiceList = new WebServiceListModel(result);
+            console.log("webServiceList=", this.webServiceList);
+            return new RepositoryResponseModel(data, status);
+        } catch (e) {
+            console.log("API Error", e.response);
+            const { data, status } = e.response;
+            return new RepositoryResponseModel(data, status);
         }
-        this.webServiceList = new WebServiceListModel(result);
+    });
 
-        console.log("webServiceList=", this.webServiceList);
-    }
-
-    @asyncAction
-    async *deleteOne(id) {
+    deleteOne = flow(function*(id) {
         try {
             const {data, status} = yield webServiceRepository.deleteOne(id);
             console.log(data);
+            return new RepositoryResponseModel(data, status);
         } catch (e) {
             console.log('API Error:', e.response);
+            const { data, status } = e.response;
+            return new RepositoryResponseModel(data, status);
         }
-    }
+    });
 
     createOne = flow(function * (webService) {
         try {
@@ -64,6 +77,13 @@ class WebServiceStore {
             return new RepositoryResponseModel(data, status);
         }
     })
+
+    @action removeWebServiceInList(webService) {
+        this.webServiceList.items.remove(webService);
+        this.webServiceList = {
+            ...this.webServiceList,
+        };
+    }
 }
 
 export default new WebServiceStore();

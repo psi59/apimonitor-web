@@ -1,11 +1,10 @@
-import {action, observable} from "mobx";
+import {action, flow, observable} from "mobx";
 import autobind from "autobind-decorator";
 import {asyncAction} from "mobx-utils";
 import testRepository from "./repositories/TestsRepository";
 import TestListModel from "./models/TestListModel";
 import TestModel from "./models/TestModel";
-import TestListItemModel from "./models/TestListItemModel";
-import Test from "../pages/Tests";
+import {RepositoryResponseModel} from "./models/RepositoryResponseModel";
 
 @autobind
 class TestStore {
@@ -17,7 +16,8 @@ class TestStore {
         console.log("created TestStore")
     }
 
-    @asyncAction async *findAll(service_id) {
+
+    findAll = flow(function*(service_id) {
         try {
             const { data, status } = yield testRepository.findAll(service_id);
             console.log(data);
@@ -28,12 +28,15 @@ class TestStore {
                 this.testList = new TestListModel(result);
                 console.log("testList=", this.testList);
             }
+            return new RepositoryResponseModel(data, status);
         } catch (e) {
             console.log("API Error: ", e);
+            const { data, status } = e.response;
+            return new RepositoryResponseModel(data, status);
         }
-    }
+    });
 
-    @asyncAction async *deleteOne(service_id, test_id) {
+    deleteOne = flow(function*(service_id, test_id) {
         try {
             const { data, status } = yield testRepository.deleteOne(service_id, test_id);
             const { success, result } = data;
@@ -46,9 +49,9 @@ class TestStore {
             console.log("API Error: ", e);
             return false;
         }
-    }
+    });
 
-    @asyncAction async *findById(testId, params) {
+    findById = flow(function*(testId, params) {
         try {
             const { data, status } = yield testRepository.findById(testId);
             const { success, result } = data;
@@ -63,9 +66,9 @@ class TestStore {
             console.log("API Error: ", e);
             return null;
         }
-    }
+    });
 
-    @asyncAction async *updateOne(test) {
+    updateOne = flow(function*(test) {
         try {
             const { data, status } = yield testRepository.updateOne(test);
             if (status !== 200) {
@@ -74,13 +77,12 @@ class TestStore {
             }
             const { success, result } = data;
             console.log("updateOne=", data);
-            // this.test = new TestModel(test);
             return true;
         } catch (e) {
             console.log("API Error: ", e);
             return false;
         }
-    }
+    });
 
     @action removeTestsByTest(test) {
         this.testList.items.remove(test);

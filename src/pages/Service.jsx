@@ -60,11 +60,14 @@ class Service extends React.Component {
     deleteService = () => {
         const { webServiceStore } = this.props;
         const { webService } = webServiceStore;
-        if (webServiceStore.deleteOne(webService.id)) {
+        webServiceStore.deleteOne(webService.id).then(res => {
+            console.log(res);
             this.setState({
-                isDeleted: true,
+                isDeleted: res.status === 200,
             });
-        }
+        }).catch(reason => {
+            console.log(reason);
+        });
     };
 
     render() {

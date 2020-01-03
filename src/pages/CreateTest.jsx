@@ -7,6 +7,7 @@ import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 import {getWebServiceId} from "../helpers/utils/path";
 import {updateService} from "../store/modules/service";
+import {inject} from "mobx-react";
 
 export const methods = {
     get: "GET",
@@ -18,6 +19,70 @@ export const methods = {
 };
 
 export const methodValues = Object.values(methods);
+
+// @inject("webServiceStore")
+// class CreateTest2 extends React.Component {
+//     constructor(props) {
+//         super(props);
+//         this.state = {
+//             method: methods.get,
+//             queryParams
+//         }
+//     }
+//
+//     setMethod = (e) => {
+//         this.setState({
+//             method: e.target.value,
+//         })
+//     };
+//
+//     render() {
+//         return (
+//             <div className="section is-small">
+//                 <div className="columns is-centered">
+//                     <section className="column is-small is-8">
+//                         <div className="has-text-left u-m-b-20">
+//                             <h3 className="title  u-m-b-5">Add a new test</h3>
+//                         </div>
+//                         <hr className="u-m-0 u-m-b-50"/>
+//                         <section className="section is-paddingless has-text-left">
+//                             <div className="field has-addons">
+//                                 <div className="control">
+//                                     <Dropdown width="100px" items={methodValues} setValue={this.setMethod}/>
+//                                 </div>
+//                                 <div className="control is-expanded">
+//                                     <input className="input has-text-centered is-fullwidth" type="text" value={`${service.http_schema}://${service.host}`} readOnly/>
+//                                 </div>
+//                                 <div className="control is-expanded">
+//                                     <input className="input is-fullwidth" type="text" value={path} onChange={event => setPath(event.target.value)}/>
+//                                 </div>
+//                             </div>
+//                         </section>
+//                         <section className="section is-paddingless u-m-t-20">
+//                             <ParameterEditor title="Query parameters" parameters={queryParams} setParametersFunc={setQueryParams}/>
+//                         </section>
+//                         <section className="section is-paddingless u-m-t-20">
+//                             <ParameterEditor title="Request headers"/>
+//                         </section>
+//                         <section className="section is-paddingless u-m-t-20">
+//                             <ParameterEditor title="Request body"/>
+//                         </section>
+//                         <section className="section is-paddingless u-m-t-30">
+//                             <div className="field is-grouped is-grouped-centered">
+//                                 <div className="control">
+//                                     <button className="button is-success" onClick={createTest}>Submit</button>
+//                                 </div>
+//                                 <div className="control">
+//                                     <Link to={`/services/${service.id}`} className="button is-danger">Cancel</Link>
+//                                 </div>
+//                             </div>
+//                         </section>
+//                     </section>
+//                 </div>
+//             </div>
+//         );
+//     }
+// }
 
 export default function CreateTest(props) {
     const service_id = getWebServiceId();

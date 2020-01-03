@@ -46,9 +46,12 @@ class ParameterPanel extends React.Component {
         console.log("updateTestWithParameters=2");
         test.updateProperty(parameterName, parameter);
         console.log("newTest=", test);
-        if (testStore.updateOne(test)) {
-            console.log("updated test")
-        }
+        testStore.updateOne(test).then(isUpdated => {
+            if (isUpdated)
+                console.log("updated test")
+        }).catch(reason => {
+            console.log("reason: ", reason)
+        });
     };
 
     deleteParameterInNewParameters = key => {
@@ -56,7 +59,7 @@ class ParameterPanel extends React.Component {
         let newParameter = this.state.newParameters;
         this.setState({
             newParameters: newParameter.filter(k => k !== key),
-        })
+        });
         console.log("newParameters=", this.state.newParameters);
     };
 
