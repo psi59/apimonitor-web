@@ -1,9 +1,10 @@
-import {observable} from "mobx";
+import {flow, observable} from "mobx";
 import {asyncAction} from "mobx-utils";
 import webServiceRepository from "./repositories/WebServiceRepository";
 import autobind from "autobind-decorator";
 import {WebServiceListModel} from "./models/WebServiceListModel";
 import WebServiceModel from "./models/WebServiceModel";
+import {RepositoryResponseModel} from "./models/RepositoryResponseModel";
 
 @autobind
 class WebServiceStore {
@@ -47,12 +48,22 @@ class WebServiceStore {
         try {
             const {data, status} = yield webServiceRepository.deleteOne(id);
             console.log(data);
-            return status === 200;
         } catch (e) {
-            console.log('API Error:', e);
-            return false
+            console.log('API Error:', e.response);
         }
     }
+
+    createOne = flow(function * (webService) {
+        try {
+            const {data, status} = yield webServiceRepository.createOne(webService);
+            console.log(data);
+            return new RepositoryResponseModel(data, status);
+        } catch (e) {
+            console.log('API Error:', e.response);
+            const { data, status } = e.response;
+            return new RepositoryResponseModel(data, status);
+        }
+    })
 }
 
 export default new WebServiceStore();
