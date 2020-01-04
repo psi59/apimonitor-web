@@ -3,7 +3,7 @@ import {inject, observer} from "mobx-react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheckCircle, faEdit, faPlus, faTimesCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
 import classNames from 'classnames';
-import uuid from "uuid"
+import shortid from 'shortid';
 
 @inject("testStore")
 @observer
@@ -60,7 +60,6 @@ class ParameterPanel extends React.Component {
         this.setState({
             newParameters: newParameter.filter(k => k !== key),
         });
-        console.log("newParameters=", this.state.newParameters);
     };
 
     render() {
@@ -73,6 +72,7 @@ class ParameterPanel extends React.Component {
         console.log("parameter=", parameter);
         properties && console.log("properties.length= ", properties.length);
         console.log("newParameter.length= ", newParameters.length);
+        console.log("newParameter= ", newParameters);
 
         return test && (
             <div className="card u-m-b-10">
@@ -103,7 +103,7 @@ class ParameterPanel extends React.Component {
                             />
                         )}
                         {newParameters.map((k, i) => (<KeyValueEditor
-                            key={`add_editor_${i}`}
+                            key={k}
                             k={""}
                             v={""}
                             onUpdate={(key, value) => {
@@ -129,8 +129,8 @@ class ParameterPanel extends React.Component {
                                 borderRadius: '9999px',
                             }}
                             onClick={() => {
-                                const id = uuid.v4();
-                                console.log("uuid=", id);
+                                const id = shortid.generate();
+                                console.log("shortid=", id);
                                 this.setState({
                                     newParameters: [
                                         ...newParameters,
@@ -188,7 +188,8 @@ class KeyValueEditor extends React.Component {
             console.log("propertyValue=", propertyValue);
             onCancel();
         } else {
-            this.setIsEditable(true)
+            console.log("cancel edit");
+            this.setIsEditable(false);
         }
     };
 
@@ -221,6 +222,7 @@ class KeyValueEditor extends React.Component {
     render() {
         const { k, v, onDelete } = this.props;
         const { isEditable, propertyName, propertyValue, isInvalidPropertyName, isInvalidPropertyValue } = this.state;
+        console.log("state=", this.state);
         return (
             isEditable ? <div className="field has-addons has-addons-centered">
                 <div className="control is-expanded">
@@ -287,92 +289,3 @@ class KeyValueEditor extends React.Component {
         );
     }
 }
-//
-// function KeyValueEditor(props) {
-//     const { k, v, onUpdate, onDelete } = props;
-//     console.log(props);
-//     console.log(`k=${k},v=${v}`);
-//     const [ key, setKey ] = React.useState(k);
-//     const [ value, setValue ] = React.useState(v);
-//     console.log(`key=${key},value=${value}`);
-//     const [ active, setActive ] = React.useState(props.isActive ? props.isActive : false);
-//
-//     const changeKeyOnType = e => {
-//           setKey(e.target.value)
-//     };
-//
-//     const changeValueOnType = e => {
-//         setValue(e.target.value)
-//     };
-//
-//     const activeEditor = () => {
-//         setActive(true);
-//     };
-//
-//     const deactivateEditor = () => {
-//         setActive(false);
-//     };
-//
-//     const updateParameter = () => {
-//         onUpdate(key, value);
-//         deactivateEditor();
-//     };
-//
-//     const cancel = () => {
-//         deactivateEditor();
-//     };
-//
-//     return active ? <div className="field has-addons has-addons-centered">
-//             <div className="control is-expanded">
-//                 <input className="input" placeholder="Name" value={key} onChange={changeKeyOnType} />
-//             </div>
-//             <div className="control is-expanded">
-//                 <input className="input" placeholder="Value" value={value} onChange={changeValueOnType} />
-//             </div>
-//             <div className="control">
-//                 <a className="button is-success" onClick={updateParameter}>
-//                     <FontAwesomeIcon icon={faCheckCircle} />
-//                 </a>
-//             </div>
-//             <div className="control">
-//                 <a className="button is-danger" onClick={cancel}>
-//                     <FontAwesomeIcon icon={faTimesCircle} />
-//                 </a>
-//             </div>
-//         </div> : <div className="level">
-//             <div className="level-left">
-//                 <div className="level-item">
-//                     <label className="checkbox">
-//                         <input type="checkbox"/>
-//                     </label>
-//                 </div>
-//                 <div className="level-item is-italic has-text-black is-bold">
-//                     {`${k}: ${v}`}
-//                 </div>
-//             </div>
-//             <div className="level-right">
-//                 <div className="level-item">
-//                     <a
-//                         className="has-text-grey-dark"
-//                         style={{
-//                             fontSize: "13px"
-//                         }}
-//                         onClick={e => activeEditor()}
-//                     >
-//                         <FontAwesomeIcon icon={faEdit} />
-//                     </a>
-//                 </div>
-//                 <div className="level-item">
-//                     <a
-//                         className="has-text-grey-dark"
-//                         style={{
-//                             fontSize: "13px"
-//                         }}
-//                         onClick={onDelete}
-//                     >
-//                         <FontAwesomeIcon icon={faTrash} />
-//                     </a>
-//                 </div>
-//             </div>
-//         </div>
-// }
