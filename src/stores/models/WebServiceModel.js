@@ -4,27 +4,27 @@ class WebServiceModel {
     @observable id;
     @observable host;
     @observable httpSchema;
-    @observable desc;
-    @observable favicon;
-    @observable schedule;
-    @observable created;
-    @observable lastModified;
+    @observable description;
+    @observable createdAt;
+    @observable modifiedAt;
 
     constructor(data) {
         if (!data)
             return;
         this.id = data.id;
         this.host = data.host;
-        this.httpSchema = data.httpSchema;
-        this.desc = data.desc;
-        this.favicon = data.favicon;
-        this.schedule = data.schedule;
-        this.created = data.created;
-        this.lastModified = data.lastModified;
+        this.schema = data.schema;
+        this.description = data.description;
+        this.createdAt = data.createdAt;
+        this.modified = data.modifiedAt;
     }
 
     @computed get address() {
-        return `${this.httpSchema}://${this.host}`;
+        return `${this.schema}://${this.host}`;
+    }
+
+    @computed get favicon() {
+        return `https://s2.googleusercontent.com/s2/favicons?domain_url=${this.schema}://${this.host}`
     }
 }
 

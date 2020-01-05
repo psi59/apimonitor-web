@@ -14,11 +14,11 @@ class TestRepository {
     }
 
     findAll(service_id, params) {
-        return axios.get(`${this.Host}/tests?web_service_id=${service_id}`, { params })
+        return axios.get(`${this.Host}/webservices/${service_id}/tests`, { params })
     }
 
     deleteOne(service_id, test_id) {
-        return axios.delete(`${this.Host}/tests/${test_id}?web_service_id=${service_id}`)
+        return axios.delete(`${this.Host}/tests/${test_id}`)
     }
 
     updateOne(test) {

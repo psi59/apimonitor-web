@@ -4,6 +4,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheckCircle, faEdit, faPlus, faTimesCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
 import classNames from 'classnames';
 import shortid from 'shortid';
+import {observable} from "mobx";
 
 @inject("testStore")
 @observer
@@ -21,7 +22,8 @@ class ParameterPanel extends React.Component {
     updateParameter = (oldKey)  => (key, value) => {
         const { testStore, parameterName } = this.props;
         const { test } = testStore;
-        let parameter = test[parameterName];
+        const { parameters } = test;
+        let parameter = parameters[parameterName];
         if (oldKey) {
             delete parameter[oldKey];
             console.log(`deleted k=${oldKey}: `, parameter);
@@ -34,7 +36,8 @@ class ParameterPanel extends React.Component {
     deleteParameter = (oldKey) => () => {
         const { testStore, parameterName } = this.props;
         const { test } = testStore;
-        let parameter = test[parameterName];
+        const { parameters } = test;
+        let parameter = parameters[parameterName];
         delete parameter[oldKey];
         this.updateTestWithParameters(parameter);
     };
@@ -44,7 +47,7 @@ class ParameterPanel extends React.Component {
         const { testStore, parameterName } = this.props;
         const { test } = testStore;
         console.log("updateTestWithParameters=2");
-        test.updateProperty(parameterName, parameter);
+        test.updateParameters(parameterName, parameter);
         console.log("newTest=", test);
         testStore.updateOne(test).then(isUpdated => {
             if (isUpdated)
@@ -66,7 +69,8 @@ class ParameterPanel extends React.Component {
         const { testStore, header, parameterName } = this.props;
         const { newParameters } = this.state;
         const { test } = testStore;
-        const parameter = test && test[parameterName];
+        const { parameters } = test;
+        const parameter = parameters && parameters[parameterName];
         const properties = parameter && Object.entries(parameter);
         console.log("properties=", properties);
         console.log("parameter=", parameter);
@@ -161,7 +165,6 @@ class KeyValueEditor extends React.Component {
             isInvalidPropertyValue: false,
             isEditable: isEditable,
         };
-        console.log("state=", this.state);
     }
 
     updateParameter = () => {
@@ -222,7 +225,6 @@ class KeyValueEditor extends React.Component {
     render() {
         const { k, v, onDelete } = this.props;
         const { isEditable, propertyName, propertyValue, isInvalidPropertyName, isInvalidPropertyValue } = this.state;
-        console.log("state=", this.state);
         return (
             isEditable ? <div className="field has-addons has-addons-centered">
                 <div className="control is-expanded">

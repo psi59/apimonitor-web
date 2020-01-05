@@ -6,10 +6,10 @@ class TestListItemModel {
     @observable id;
     @observable path;
     @observable url;
-    @observable httpMethod;
-    @observable desc;
-    @observable created;
-    @observable lastModified;
+    @observable method;
+    @observable description;
+    @observable createdAt;
+    @observable modifiedAt;
 
     constructor(data) {
         if (!data)
@@ -17,10 +17,10 @@ class TestListItemModel {
         this.id = data.id;
         this.path = data.path;
         this.url = data.url;
-        this.httpMethod = data.httpMethod;
-        this.desc = data.desc;
-        this.created = data.created;
-        this.lastModified = data.lastModified;
+        this.method = data.method;
+        this.description = data.description;
+        this.createdAt = data.createdAt;
+        this.modifiedAt = data.modifiedAt;
     }
 }
 

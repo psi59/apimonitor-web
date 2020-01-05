@@ -94,7 +94,7 @@ class TestStore {
     @action updateHttpMethod(httpMethod) {
         this.test = new TestModel({
             ...this.test,
-            httpMethod: httpMethod,
+            method: httpMethod,
         });
     }
 

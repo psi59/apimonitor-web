@@ -22,11 +22,11 @@ class TestSettingPanel extends React.Component {
                 />
                 <ParameterPanel
                     header="Query parameters"
-                    parameterName={"queryParam"}
+                    parameterName={"query"}
                 />
                 <ParameterPanel
                     header="Request body"
-                    parameterName={"requestData"}
+                    parameterName={"body"}
                 />
             </div>
         );

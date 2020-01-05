@@ -92,9 +92,9 @@ class Service extends React.Component {
                     <div className="level-right">
                         <div className="level-item">
                             <Link to={`/services/${webService.id}/tests/new`} className="button is-info is-outlined">
-                            <span className="icon is-small">
-                              <FontAwesomeIcon icon={faPlus} />
-                            </span>
+                                <span className="icon is-small">
+                                  <FontAwesomeIcon icon={faPlus} />
+                                </span>
                             </Link>
                         </div>
                         <div className="level-item">

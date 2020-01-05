@@ -1,6 +1,4 @@
 import React from 'react'
-import {getApiUrl} from "../helpers/API";
-import axios from "axios";
 import {Redirect} from "react-router-dom";
 import classNames from 'classnames';
 import {inject, observer} from "mobx-react";
@@ -32,7 +30,6 @@ class CreateService extends React.Component {
 
         webServiceStore.createOne({
             host: host,
-            schedule: "5m"
         }).then(res => {
             if (res.status === 200)
                 this.setState({

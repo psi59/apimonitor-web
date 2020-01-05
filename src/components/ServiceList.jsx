@@ -4,6 +4,7 @@ import {faPlay} from "@fortawesome/free-solid-svg-icons";
 import classNames from 'classnames';
 import Avatar from "./Avatar";
 import {inject, observer} from "mobx-react";
+import * as shortid from "shortid";
 
 @inject("webServiceStore")
 @observer
@@ -20,13 +21,8 @@ class ServiceList extends React.Component {
             <section className="section">
                 {webServiceList.items.map(webService => (
                     <ServiceListItem
-                        key={`webService_${webService.id}`}
-                        service_id={webService.id}
-                        image={webService.favicon}
-                        host={webService.host}
-                        http_schema={webService.httpSchema}
-                        schedule={webService.schedule}
-                        desc={webService.desc}
+                        key={shortid.generate()}
+                        webService={webService}
                     />
                 ))}
             </section>
@@ -37,17 +33,18 @@ class ServiceList extends React.Component {
 export default ServiceList;
 
 function ServiceListItem(props) {
+    const { webService } = props;
     return <div className="box">
         <div className="level">
             <div className="level-left">
                 <Avatar
-                    image={props.image}
-                    host={props.host}
+                    // image={webService.favicon}
+                    host={webService.host}
                 />
                 <div className="level-item">
                     <strong className="title is-4">
-                        <a href={`/services/${props.service_id}`}>
-                            {props.host}
+                        <a href={`/services/${webService.id}`}>
+                            {webService.host}
                         </a>
                     </strong>
                 </div>
@@ -63,7 +60,7 @@ function ServiceListItem(props) {
         </div>
         <div className="section is-paddingless has-text-left">
             <div className="has-text-grey has-text-left">
-                {props.desc}
+                {webService.description}
             </div>
         </div>
         <div
@@ -73,14 +70,13 @@ function ServiceListItem(props) {
             }}
         >
             <span
-                className={classNames("tag", "u-m-r-5", ((props.http_schema==="https" ? "is-success" : "is-danger")))}
+                className={classNames(
+                    "tag",
+                    "u-m-r-5",
+                    ((webService.schema==="https" ? "is-success" : "is-danger"))
+                )}
             >
-                {props.http_schema}
-            </span>
-            <span
-                className={classNames("tag", "u-m-r-5", "is-warning")}
-            >
-                {`schedule: ${props.schedule}`}
+                {webService.schema}
             </span>
         </div>
     </div>

@@ -66,8 +66,8 @@ class TestListItem extends React.Component {
             <div className="box">
                 <div className="level">
                     <div className="level-left">
-                <span className={classNames("tag", "is-normal", "u-m-r-10", this.getMethodColorClass(test.httpMethod))}>
-                    {test.httpMethod}
+                <span className={classNames("tag", "is-normal", "u-m-r-10", this.getMethodColorClass(test.method))}>
+                    {test.method}
                 </span>
                         <span>
                     <strong><a href={`/tests/${test.id}`}>{test.path}</a></strong>
@@ -87,7 +87,7 @@ class TestListItem extends React.Component {
                     </div>
                 </div>
                 {isShort ? null : <div className="has-text-left">
-                    <p className="has-text-grey">{test.desc ? test.desc : "no description"}</p>
+                    <p className="has-text-grey">{test.description ? test.description : "no description"}</p>
                 </div> }
             </div>
         );

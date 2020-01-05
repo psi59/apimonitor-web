@@ -7,47 +7,52 @@ class TestModel {
     @observable id;
     @observable webService;
     @observable path;
-    @observable httpMethod;
+    @observable method;
     @observable contentType;
-    @observable desc;
-    @observable requestData;
-    @observable header;
-    @observable queryParam;
+    @observable description;
+    @observable parameters;
     @observable timeout;
     @observable assertion;
-    @observable created;
-    @observable lastModified;
+    @observable createdAt;
+    @observable modifiedAt;
 
     constructor(data) {
         if (!data)
             return this;
         this.id = data.id;
+        this.name = data.name;
         this.webService = new WebServiceModel(data.webService);
         this.path = data.path;
-        this.httpMethod = data.httpMethod;
+        this.method = data.method;
         this.contentType = data.contentType;
-        this.desc = data.desc;
-        this.requestData = data.requestData;
-        this.header = data.header;
-        this.queryParam = data.queryParam;
+        this.description = data.description;
+        this.parameters = data.parameters;
         this.timeout = data.timeout;
         this.assertion = data.assertion;
-        this.created = data.created;
-        this.lastModified = data.lastModified;
+        this.createdAt = data.createdAt;
+        this.modifiedAt = data.modifiedAt;
     }
 
-    @action updateProperty(propertyName, propertyValue) {
-        switch (propertyName.toLowerCase()) {
+    @action updateParameters(parameterName, parameterValue) {
+        let parameters = this.parameters;
+        switch (parameterName.toLowerCase()) {
             case "header":
-                this.header = propertyValue;
+                parameters.header = parameterValue;
+                this.parameters = parameters;
                 return;
-            case "queryParam":
-                this.queryParam = propertyValue;
+            case "query":
+                parameters.query = parameterValue;
+                this.parameters = parameters;
                 return;
-            case "requestData":
-                this.requestData = propertyValue;
+            case "body":
+                parameters.body = parameterValue;
+                this.parameters = parameters;
                 return;
         }
+    }
+
+    @action updateDescription(description) {
+        this.description = description;
     }
 }
 
