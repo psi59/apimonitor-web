@@ -7,6 +7,9 @@ import {faPlay, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 import {inject, observer} from "mobx-react";
 import ResultList from "../components/ResultList";
 import TestSettingPanel from "../components/TestSettingPanel";
+import EditableText from "../components/EditableText";
+
+
 export const methods = {
     get: "GET",
     put: "PUT",
@@ -33,14 +36,20 @@ class Test extends React.Component {
         resultStore.findByTestId(testId)
     }
 
+    updateTestDescription = (text) => {
+        const { testStore } = this.props;
+        const { test } = testStore;
+        test.updateDescription(text);
+        testStore.updateOne(test);
+    };
+
     render() {
         const { testStore, resultStore } = this.props;
         const { test } = testStore;
-        const { webService } = test;
+        const { webService, description } = test;
         const { resultList } = resultStore;
          return (
             <div>
-                {webService && <section className="section">
                 {webService &&
                 <section className="section">
                     <div className="level">
@@ -73,6 +82,29 @@ class Test extends React.Component {
                         </div>
                     </div>
                 </section>}
+                <section className="section">
+                    <div className="has-text-left">
+                        <h1 className="title">
+                            {test.name}
+                        </h1>
+                        <h6
+                            className="subtitle is-6 has-text-grey-dark"
+                        >
+                            {description &&
+                                <EditableText
+                                    text={ description }
+                                    onUpdate={this.updateTestDescription}
+                                    placeholder={"Add description"}
+                                />}
+                            {!description &&
+                                <EditableText
+                                    text={""}
+                                    placeholder={"Add description"}
+                                    onUpdate={this.updateTestDescription}
+                                />}
+                        </h6>
+                    </div>
+                </section>
                 <section className="section has-text-left u-p-t-0">
                     <div className="columns is-variable is-1">
                         <div className="column is-11">
