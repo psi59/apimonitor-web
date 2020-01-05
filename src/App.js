@@ -14,7 +14,6 @@ import {faCaretDown} from "@fortawesome/free-solid-svg-icons";
 import Home from "./pages/Home";
 import CreateService from "./pages/CreateService";
 import {faGithub} from "@fortawesome/free-brands-svg-icons";
-import CreateTest from "./pages/CreateTest";
 import Test from "./pages/Tests";
 import Service from "./pages/Service";
 
@@ -47,7 +46,6 @@ function App() {
         <Switch>
             <Route path="/services/new" exact children={ <CreateService /> } />
             <Route path="/services/:service_id" strict exact children={ <Service /> }/>
-            <Route path="/services/:service_id/tests/new" strict exact children={ <CreateTest /> }/>
             <Route path="/tests/:testId" strict exact children={ <Test /> }/>
             <Route path="/" exact children={ <Home/> } />
         </Switch>
