@@ -9,6 +9,7 @@ import {inject, observer} from "mobx-react";
 import queryString from "query-string";
 import {getWebServiceId} from "../helpers/utils/path";
 import ResultList from "../components/ResultList";
+import TestModel from "../stores/models/TestModel";
 
 const tabs = {
     Overview: "Overview",
@@ -70,6 +71,27 @@ class Service extends React.Component {
         });
     };
 
+    addTest = () => {
+        const { testStore } = this.props;
+        const webServiceId = getWebServiceId();
+        testStore.createOne(webServiceId, {
+            "method": "get",
+            "schedule": "5m",
+            "assertion": {},
+            "contentType": "application/json",
+            "timeout": 1,
+            "path": "/",
+            "description": "root test",
+            "name": "OK",
+            "parameters": {}
+        }).then((test) => {
+            console.log(test);
+            window.location.replace(`/tests/${test.id}`);
+        }).catch((e) => {
+            console.log(e);
+        })
+    };
+
     render() {
         const { webServiceStore } = this.props;
         const { webService } = webServiceStore;
@@ -91,24 +113,24 @@ class Service extends React.Component {
                     </div>
                     <div className="level-right">
                         <div className="level-item">
-                            <Link to={`/services/${webService.id}/tests/new`} className="button is-info is-outlined">
+                            <button className="button is-outlined is-info" onClick={this.addTest} >
                                 <span className="icon is-small">
                                   <FontAwesomeIcon icon={faPlus} />
                                 </span>
-                            </Link>
+                            </button>
                         </div>
                         <div className="level-item">
                             <button className="button is-danger is-outlined" onClick={this.deleteService}>
-                            <span className="icon is-small">
-                              <FontAwesomeIcon icon={faTrashAlt} />
-                            </span>
+                                <span className="icon is-small">
+                                  <FontAwesomeIcon icon={faTrashAlt} />
+                                </span>
                             </button>
                         </div>
                         <div className="level-item">
                             <button className="button is-success is-outlined">
-                            <span className="icon is-small">
-                              <FontAwesomeIcon icon={faPlay} />
-                            </span>
+                                <span className="icon is-small">
+                                  <FontAwesomeIcon icon={faPlay} />
+                                </span>
                             </button>
                         </div>
                     </div>

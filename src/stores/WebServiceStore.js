@@ -49,8 +49,7 @@ class WebServiceStore {
             return new RepositoryResponseModel(data, status);
         } catch (e) {
             console.log("API Error", e.response);
-            const { data, status } = e.response;
-            return new RepositoryResponseModel(data, status);
+            return null;
         }
     });
 

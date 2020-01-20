@@ -9,12 +9,12 @@ class TestRepository {
         this.Host = this.Host || host;
     }
 
-    findById(test_id) {
-        return axios.get(`${this.Host}/tests/${test_id}`)
+    findById(testId) {
+        return axios.get(`${this.Host}/tests/${testId}`)
     }
 
-    findAll(service_id, params) {
-        return axios.get(`${this.Host}/webservices/${service_id}/tests`, { params })
+    findAll(serviceId, params) {
+        return axios.get(`${this.Host}/webservices/${serviceId}/tests`, { params })
     }
 
     deleteOne(service_id, test_id) {
@@ -29,6 +29,16 @@ class TestRepository {
             }
         }
         return axios.put(`${this.Host}/tests/${test.id}`, test)
+    }
+
+    createOne(serviceId, test) {
+        if (!test) {
+            return {
+                data: null,
+                status: 400,
+            }
+        }
+        return axios.post(`${this.Host}/webservices/${serviceId}/tests`, test)
     }
 }
 

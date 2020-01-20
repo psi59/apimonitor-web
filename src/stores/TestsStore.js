@@ -84,6 +84,22 @@ class TestStore {
         }
     });
 
+    createOne = flow(function * (serviceId, test) {
+        try {
+            const { data, status } = yield testRepository.createOne(serviceId, test);
+            if (status !== 200) {
+                console.log("API Error");
+                return false;
+            }
+            const { success, result } = data;
+            console.log("updateOne=", data);
+            return new TestModel(result);
+        } catch (e) {
+            console.log("API Error: ", e);
+            return null;
+        }
+    })
+
     @action removeTestsByTest(test) {
         this.testList.items.remove(test);
         this.testList = {

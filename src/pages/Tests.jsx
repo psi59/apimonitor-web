@@ -110,7 +110,7 @@ class Test extends React.Component {
                         <div className="column is-11">
                             <div className="field has-addons">
                                 <div className="control">
-                                    <Dropdown width="100px"
+                                    <Dropdown width="150px"
                                               items={methodValues}
                                               value={test.method}
                                               setValue={method => testStore.updateHttpMethod(method)}

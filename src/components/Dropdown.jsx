@@ -4,8 +4,7 @@ import OutsideClick from "react-outsideclick";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChevronDown} from "@fortawesome/free-solid-svg-icons";
 
-export default function Dropdown(props) {
-    const { items, width, setValue, value } = props;
+export default function Dropdown({ items, width, setValue, value }) {
     const [ isActive, setIsActive ] = React.useState(false);
     console.log(value);
     const [ selectedItem, setSelectedItem ] = React.useState(value ? value : items[0]);
@@ -33,7 +32,7 @@ export default function Dropdown(props) {
             <div
                 className="dropdown-trigger"
                 style={{
-                    width: "150px"
+                    width: width
                 }}
             >
                 <button className="button is-fullwidth" aria-haspopup="true" aria-controls="dropdown-menu3">
@@ -46,7 +45,7 @@ export default function Dropdown(props) {
             <div className="dropdown-menu" id="dropdown-menu3" role="menu">
                 <div className="dropdown-content">
                     {items.map(i => (
-                        <a href="#" className="dropdown-item" onClick={setDropdownSelectedItem(i)}>
+                        <a className="dropdown-item" onClick={setDropdownSelectedItem(i)}>
                             {i}
                         </a>
                     ))}
