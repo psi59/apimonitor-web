@@ -52,6 +52,13 @@ class Test extends React.Component {
             <div>
                 {webService &&
                 <section className="section">
+                    <nav className="breadcrumb" aria-label="breadcrumbs">
+                        <ul>
+                            <li><a href="/">WebServices</a></li>
+                            <li><a href={`/services/${webService.id}`}>Tests</a></li>
+                            <li className="is-active"><a href="#" aria-current="page">{`${test.name} (${test.id})`}</a></li>
+                        </ul>
+                    </nav>
                     <div className="level">
                         <div className="level-left">
                             <Avatar

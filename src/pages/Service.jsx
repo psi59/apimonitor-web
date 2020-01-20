@@ -99,6 +99,12 @@ class Service extends React.Component {
 
         return isDeleted ? <Redirect to="/" /> :  <div>
             <section className="section">
+                <nav className="breadcrumb" aria-label="breadcrumbs">
+                    <ul>
+                        <li><a href="/">WebServices</a></li>
+                        <li className="is-active"><a href="#" aria-current="page">{webService.host}</a></li>
+                    </ul>
+                </nav>
                 <div className="level">
                     <div className="level-left">
                         <Avatar
