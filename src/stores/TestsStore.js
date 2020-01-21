@@ -107,10 +107,10 @@ class TestStore {
         };
     }
 
-    @action updateHttpMethod(httpMethod) {
+    @action updateMethod(method) {
         this.test = new TestModel({
             ...this.test,
-            method: httpMethod,
+            method: method,
         });
     }
 
@@ -118,6 +118,13 @@ class TestStore {
         this.test = new TestModel({
             ...this.test,
             path: path,
+        });
+    }
+
+    @action updateSchedule(schedule) {
+        this.test = new TestModel({
+            ...this.test,
+            schedule: schedule,
         });
     }
 }

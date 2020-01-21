@@ -11,6 +11,7 @@ class TestModel {
     @observable contentType;
     @observable description;
     @observable parameters;
+    @observable schedule;
     @observable timeout;
     @observable assertion;
     @observable createdAt;
@@ -27,6 +28,7 @@ class TestModel {
         this.contentType = data.contentType;
         this.description = data.description;
         this.parameters = data.parameters;
+        this.schedule = data.schedule;
         this.timeout = data.timeout;
         this.assertion = data.assertion;
         this.createdAt = data.createdAt;
