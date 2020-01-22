@@ -1,16 +1,15 @@
 import React from 'react';
 import {inject, observer} from "mobx-react";
 import ParameterPanel from "./ParameterPanel";
-import {set} from "mobx";
 import BodyParameterPanel from "./BodyParameterPanel";
-
-const parameterTab = "parameter";
-const assertionTab = "assertion";
-const settingTab = "setting";
-const tabs = [
-    parameterTab,
-    assertionTab,
-    settingTab,
+import Dropdown from "./Dropdown";
+const schedules = [
+    "1m",
+    "5m",
+    "15m",
+    "30m",
+    "1h",
+    "1d"
 ];
 
 @inject(
@@ -20,19 +19,56 @@ const tabs = [
 class TestSettingPanel extends React.Component {
     constructor(props) {
         super(props);
+        const { testStore } = this.props;
+        const { test } = testStore;
     }
+
+    updateSchedule = (schedule) => {
+        const { testStore } = this.props;
+        testStore.updateSchedule(schedule);
+        const { test } = testStore;
+        testStore.updateOne(test);
+    };
 
     render() {
         const { testStore } = this.props;
         const { test } = testStore;
+        const { schedule } = test;
         const panelStyle = {
           border: "1px solid #e5e5e5"
         };
         const panelBlockStyle = {
             padding: 0
         };
+        console.log(0, test.schedule);
+
         return (
             test && <div className="panel is-shadowless" style={panelStyle}>
+                <div
+                    className="panel-block"
+                    style={panelBlockStyle}
+                >
+                    <div
+                        className="card is-shadowless"
+                        style={{
+                            width: '100%',
+                        }}
+                    >
+                        <div
+                            className="card-header has-background-light"
+                        >
+                            <div className="card-header-title">Schedule</div>
+                        </div>
+                        <div className="card-content">
+                            {schedule && <Dropdown
+                                width="100px"
+                                items={schedules}
+                                value={schedule}
+                                setValue={this.updateSchedule}
+                            />}
+                        </div>
+                    </div>
+                </div>
                 <div
                     className="panel-block"
                     style={panelBlockStyle}

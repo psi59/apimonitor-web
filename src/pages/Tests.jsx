@@ -43,10 +43,16 @@ class Test extends React.Component {
         testStore.updateOne(test);
     };
 
+    updateTestPath = () => {
+        const { testStore } = this.props;
+        const { test } = testStore;
+        testStore.updateOne(test);
+    };
+
     render() {
         const { testStore, resultStore } = this.props;
         const { test } = testStore;
-        const { webService, description } = test;
+        const { webService, description, method } = test;
         const { resultList } = resultStore;
          return (
             <div>
@@ -117,11 +123,11 @@ class Test extends React.Component {
                         <div className="column is-11">
                             <div className="field has-addons">
                                 <div className="control">
-                                    <Dropdown width="150px"
+                                    {method && <Dropdown width="150px"
                                               items={methodValues}
-                                              value={test.method}
-                                              setValue={method => testStore.updateHttpMethod(method)}
-                                    />
+                                              value={method}
+                                              setValue={method => testStore.updateMethod(method)}
+                                    />}
                                 </div>
                                 <div className="control is-expanded">
                                     {webService && <input
@@ -143,7 +149,7 @@ class Test extends React.Component {
                         <div className="column is-1">
                             <button
                                 className="button is-primary is-fullwidth"
-                                // onClick={updateTest}
+                                onClick={this.updateTestPath}
                             >
                                 Save
                             </button>

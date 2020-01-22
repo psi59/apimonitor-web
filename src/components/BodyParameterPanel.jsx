@@ -87,9 +87,7 @@ class BodyParameterPanel extends React.Component {
     };
 
     render() {
-        const { header, testStore } = this.props;
-        const { body } = this.state;
-        const { test } = testStore;
+        const { header } = this.props;
 
         return (
             <div
@@ -145,6 +143,9 @@ class BodyParameterPanel extends React.Component {
 
 export default BodyParameterPanel;
 
+
+@inject("testStore")
+@observer
 class BodyEditor extends React.Component {
     constructor(props) {
         super(props);
@@ -202,14 +203,18 @@ class BodyEditor extends React.Component {
     };
 
     render() {
+        const { header, testStore } = this.props;
+        const { test } = testStore;
+        const { contentType } = test;
         const { body, isEditMode } = this.state;
         return (
             <div>
                 <div className="u-m-b-10">
-                    <Dropdown
+                    {contentType && <Dropdown
                         items={rawContentTypes}
                         setValue={this.updateSelectedRawContentType}
-                    />
+                        value={contentType}
+                    />}
                 </div>
                 <div
                     className="u-m-b-10"
