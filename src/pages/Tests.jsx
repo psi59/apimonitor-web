@@ -49,11 +49,22 @@ class Test extends React.Component {
         testStore.updateOne(test);
     };
 
+    execute = () => {
+        const { testStore, resultStore } = this.props;
+        const { test } = testStore;
+        testStore.executeOne(test).then(() => {
+            resultStore.findByTestId(test.id);
+        }).catch((e) => {
+            console.log("error=", e);
+        });
+    };
+
     render() {
         const { testStore, resultStore } = this.props;
         const { test } = testStore;
         const { webService, description, method } = test;
         const { resultList } = resultStore;
+
          return (
             <div>
                 {webService &&
@@ -80,16 +91,19 @@ class Test extends React.Component {
                         <div className="level-right">
                             <div className="level-item">
                                 <button className="button is-danger is-outlined" >
-                            <span className="icon is-small">
-                              <FontAwesomeIcon icon={faTrashAlt} />
-                            </span>
+                                    <span className="icon is-small">
+                                      <FontAwesomeIcon icon={faTrashAlt} />
+                                    </span>
                                 </button>
                             </div>
                             <div className="level-item">
-                                <button className="button is-success is-outlined">
-                            <span className="icon is-small">
-                              <FontAwesomeIcon icon={faPlay} />
-                            </span>
+                                <button
+                                    className="button is-success is-outlined"
+                                    onClick={this.execute}
+                                >
+                                    <span className="icon is-small">
+                                      <FontAwesomeIcon icon={faPlay} />
+                                    </span>
                                 </button>
                             </div>
                         </div>

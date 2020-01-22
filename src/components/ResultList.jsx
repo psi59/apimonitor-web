@@ -4,14 +4,19 @@ import {faCheckCircle} from "@fortawesome/free-solid-svg-icons";
 import {faTimesCircle} from "@fortawesome/free-regular-svg-icons";
 import {observable} from "mobx";
 import * as shortid from "shortid";
+import {useStores} from "../stores/store";
+import {observer} from "mobx-react";
 
-export default function ResultList(props) {
-    const { results } = props;
-
+const ResultList = observer(() => {
+    const { resultStore } = useStores();
+    const { resultList } = resultStore;
+    const { items } = resultList;
     return <div>
-        { observable.array(results).length > 0 ? results.map(result => (<ResultListItem key={shortid.generate()} result={result}/>)) : <div> No Results</div>}
+        {observable.array(items).length > 0 ? items.map(result => (<ResultListItem key={shortid.generate()} result={result}/>)) : <div> No Results</div>}
     </div>
-}
+});
+
+export default ResultList;
 
 function ResultListItem(props) {
     const { result, test_id } = props;

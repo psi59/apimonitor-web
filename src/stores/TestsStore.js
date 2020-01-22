@@ -98,7 +98,20 @@ class TestStore {
             console.log("API Error: ", e);
             return null;
         }
-    })
+    });
+
+    executeOne = flow(function * (test) {
+        try {
+            const { data, status } = yield testRepository.executeOne(test);
+            if (status !== 200) {
+                console.log("API Error");
+                return
+            }
+            console.log("executeOne");
+        } catch (e) {
+            console.log("API Error: ", e);
+        }
+    });
 
     @action removeTestsByTest(test) {
         this.testList.items.remove(test);

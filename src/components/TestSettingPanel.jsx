@@ -40,7 +40,6 @@ class TestSettingPanel extends React.Component {
         const panelBlockStyle = {
             padding: 0
         };
-        console.log(0, test.schedule);
 
         return (
             test && <div className="panel is-shadowless" style={panelStyle}>

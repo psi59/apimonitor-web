@@ -40,6 +40,16 @@ class TestRepository {
         }
         return axios.post(`${this.Host}/webservices/${serviceId}/tests`, test)
     }
+
+    executeOne(test) {
+        if (!test) {
+            return {
+                data: null,
+                status: 400,
+            };
+        }
+        return axios.get(`${this.Host}/tests/${test.id}/execute`, test)
+    }
 }
 
 export default new TestRepository();
