@@ -17,7 +17,7 @@ class TestRepository {
         return axios.get(`${this.Host}/webservices/${serviceId}/tests`, { params })
     }
 
-    deleteOne(service_id, test_id) {
+    deleteOne(test_id) {
         return axios.delete(`${this.Host}/tests/${test_id}`)
     }
 

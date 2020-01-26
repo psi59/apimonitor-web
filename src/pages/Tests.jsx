@@ -9,7 +9,6 @@ import ResultList from "../components/ResultList";
 import TestSettingPanel from "../components/TestSettingPanel";
 import EditableText from "../components/EditableText";
 
-
 export const methods = {
     get: "GET",
     put: "PUT",
@@ -59,11 +58,23 @@ class Test extends React.Component {
         });
     };
 
+    deleteTest = () => {
+        const { testStore } = this.props;
+        const { test } = testStore;
+        const { webService } = test;
+        console.log("webService=", webService);
+        testStore.deleteOne(test.id).then(isDeleted => {
+            if (isDeleted)
+                window.location.replace(`/`);
+        }).catch(reason => {
+            console.log("reason:", reason);
+        });
+    };
+
     render() {
-        const { testStore, resultStore } = this.props;
+        const { testStore } = this.props;
         const { test } = testStore;
         const { webService, description, method } = test;
-        const { resultList } = resultStore;
 
          return (
             <div>
@@ -72,7 +83,7 @@ class Test extends React.Component {
                     <nav className="breadcrumb" aria-label="breadcrumbs">
                         <ul>
                             <li><a href="/">WebServices</a></li>
-                            <li><a href={`/services/${webService.id}`}>Tests</a></li>
+                            <li><a href={`/services/${webService.id}`}>{webService.host}</a></li>
                             <li className="is-active"><a href="#" aria-current="page">{`${test.name} (${test.id})`}</a></li>
                         </ul>
                     </nav>
@@ -90,7 +101,10 @@ class Test extends React.Component {
                         </div>
                         <div className="level-right">
                             <div className="level-item">
-                                <button className="button is-danger is-outlined" >
+                                <button
+                                    className="button is-danger is-outlined"
+                                    onClick={this.deleteTest}
+                                >
                                     <span className="icon is-small">
                                       <FontAwesomeIcon icon={faTrashAlt} />
                                     </span>
@@ -176,7 +190,7 @@ class Test extends React.Component {
                             <TestSettingPanel test={test}/>
                         </div>
                         <div className="column is-6">
-                            <ResultList results={resultList.items}/>
+                            <ResultList />
                         </div>
                     </div>
                 </section>

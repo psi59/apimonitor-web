@@ -36,9 +36,9 @@ class TestStore {
         }
     });
 
-    deleteOne = flow(function*(service_id, test_id) {
+    deleteOne = flow(function*(test_id) {
         try {
-            const { data, status } = yield testRepository.deleteOne(service_id, test_id);
+            const { data, status } = yield testRepository.deleteOne(test_id);
             const { success, result } = data;
             if (!success) {
                 console.log("API Error");

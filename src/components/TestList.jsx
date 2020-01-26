@@ -49,9 +49,8 @@ class TestListItem extends React.Component {
 
     deleteTest = () => {
         const { testStore, test } = this.props;
-        const webServiceId = getWebServiceId();
 
-        testStore.deleteOne(webServiceId, test.id).then(isDeleted => {
+        testStore.deleteOne(test.id).then(isDeleted => {
             if (isDeleted)
                 testStore.removeTestsByTest(test);
         }).catch(reason => {
