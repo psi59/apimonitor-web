@@ -220,7 +220,7 @@ class Overview extends React.Component {
                     <TestList tests={testList.items} isShort={true}/>
                 </div>
                 <div className="column is-6">
-                    <ResultList results={resultList.items}/>
+                    <ResultList listType="overview"/>
                 </div>
             </div>
         );

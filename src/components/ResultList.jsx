@@ -1,6 +1,6 @@
 import React from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faAngleDown, faCheckCircle} from "@fortawesome/free-solid-svg-icons";
+import {faAngleDown, faCheckCircle, faSync} from "@fortawesome/free-solid-svg-icons";
 import {faTimesCircle} from "@fortawesome/free-regular-svg-icons";
 import {observable} from "mobx";
 import * as shortid from "shortid";
@@ -10,11 +10,40 @@ import classNames from "classnames"
 import SyntaxHighlighter from "react-syntax-highlighter";
 import {idea} from "react-syntax-highlighter/dist/cjs/styles/hljs";
 
-const ResultList = observer(() => {
-    const { resultStore } = useStores();
+const ResultList = observer(({ listType }) => {
+    const { resultStore, webServiceStore, testStore } = useStores();
+    const { webService } = webServiceStore;
+    const { test } = testStore;
     const { resultList } = resultStore;
     const { items } = resultList;
+
+    const refreshList = () => {
+        switch (listType) {
+            case "overview":
+                console.log(0, "overview");
+                return resultStore.findByWebServiceId(webService.id);
+            case "test":
+                console.log(0, "test");
+                return resultStore.findByTestId(test.id)
+        }
+        return null;
+    };
+
     return <div>
+        <div className="level is-marginless">
+            <div className="level-left"> </div>
+            <div className="level-right">
+                <div className="level-item">
+                    <a
+                        className="card-header-icon"
+                        aria-label="more options"
+                        onClick={refreshList}
+                    >
+                        <FontAwesomeIcon icon={faSync} />
+                    </a>
+                </div>
+            </div>
+        </div>
         {observable.array(items).length > 0 ? items.map(result => (<ResultListItem key={shortid.generate()} result={result}/>)) : <div> No Results</div>}
     </div>
 });

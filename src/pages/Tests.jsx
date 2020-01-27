@@ -198,7 +198,7 @@ class Test extends React.Component {
                             <TestSettingPanel test={test}/>
                         </div>
                         <div className="column is-6">
-                            <ResultList />
+                            <ResultList listType="test" />
                         </div>
                     </div>
                 </section>
