@@ -1,6 +1,5 @@
 import {action, flow, observable} from "mobx";
 import autobind from "autobind-decorator";
-import {asyncAction} from "mobx-utils";
 import testRepository from "./repositories/TestsRepository";
 import TestListModel from "./models/TestListModel";
 import TestModel from "./models/TestModel";
@@ -38,8 +37,8 @@ class TestStore {
 
     deleteOne = flow(function*(test_id) {
         try {
-            const { data, status } = yield testRepository.deleteOne(test_id);
-            const { success, result } = data;
+            const { data } = yield testRepository.deleteOne(test_id);
+            const { success } = data;
             if (!success) {
                 console.log("API Error");
                 return false;
@@ -53,7 +52,7 @@ class TestStore {
 
     findById = flow(function*(testId, params) {
         try {
-            const { data, status } = yield testRepository.findById(testId);
+            const { data } = yield testRepository.findById(testId);
             const { success, result } = data;
             if (!success) {
                 console.log("API Error");
@@ -75,7 +74,6 @@ class TestStore {
                 console.log("API Error");
                 return false;
             }
-            const { success, result } = data;
             console.log("updateOne=", data);
             return true;
         } catch (e) {
@@ -91,7 +89,7 @@ class TestStore {
                 console.log("API Error");
                 return false;
             }
-            const { success, result } = data;
+            const { result } = data;
             console.log("updateOne=", data);
             return new TestModel(result);
         } catch (e) {
@@ -102,7 +100,7 @@ class TestStore {
 
     executeOne = flow(function * (test) {
         try {
-            const { data, status } = yield testRepository.executeOne(test);
+            const { status } = yield testRepository.executeOne(test);
             if (status !== 200) {
                 console.log("API Error");
                 return

@@ -1,6 +1,4 @@
 import axios from "axios";
-import {getApiUrl} from "../../helpers/API";
-import TestModel from "../models/TestModel";
 
 class TestRepository {
     Host = "http://localhost:1323/v1";

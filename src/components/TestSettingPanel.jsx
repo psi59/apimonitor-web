@@ -17,12 +17,6 @@ const schedules = [
 )
 @observer
 class TestSettingPanel extends React.Component {
-    constructor(props) {
-        super(props);
-        const { testStore } = this.props;
-        const { test } = testStore;
-    }
-
     updateSchedule = (schedule) => {
         const { testStore } = this.props;
         testStore.updateSchedule(schedule);

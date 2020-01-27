@@ -1,5 +1,4 @@
 import axios from "axios";
-import {getApiUrl} from "../../helpers/API";
 
 class WebServiceRepository {
     URL = "http://localhost:1323/v1";

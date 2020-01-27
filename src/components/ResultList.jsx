@@ -19,7 +19,7 @@ const ResultList = observer(() => {
 export default ResultList;
 
 function ResultListItem(props) {
-    const { result, test_id } = props;
+    const { result } = props;
 
     return <div className="box">
         <div className="media">

@@ -37,7 +37,7 @@ class Test extends React.Component {
     }
 
     getResults = () => {
-        const { testStore, resultStore } = this.props;
+        const { resultStore } = this.props;
         const testId = this.props.match.params.testId;
         resultStore.findByTestId(testId);
         console.log(0, "Tick");

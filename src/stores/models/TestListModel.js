@@ -1,4 +1,4 @@
-import {extendObservable, observable} from "mobx";
+import {observable} from "mobx";
 import TestListItemModel from "./TestListItemModel";
 
 

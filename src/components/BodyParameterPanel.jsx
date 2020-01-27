@@ -15,16 +15,9 @@ import "codemirror/addon/edit/closetag.js"
 import "codemirror/addon/edit/matchbrackets.js"
 import 'codemirror-graphql/mode';
 
-const parameterName = "body";
 const formDataContentType = "multipart/form-data";
 const formDataFormUrlEncodedContentType = "application/x-www-form-urlencoded";
 const rawContentType = "raw";
-
-const contentTypes = [
-    formDataContentType,
-    formDataFormUrlEncodedContentType,
-    rawContentType,
-];
 
 const rawContentTypes = [
     "application/json",
@@ -165,7 +158,6 @@ class BodyEditor extends React.Component {
     };
 
     setIsEditMode = bool => () => {
-        const { isEditMode } = this.state;
         this.setState({
             isEditMode: bool
         })
@@ -203,7 +195,7 @@ class BodyEditor extends React.Component {
     };
 
     render() {
-        const { header, testStore } = this.props;
+        const { testStore } = this.props;
         const { test } = testStore;
         const { contentType } = test;
         const { body, isEditMode } = this.state;
