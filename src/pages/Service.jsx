@@ -71,9 +71,9 @@ class Service extends React.Component {
     };
 
     addTest = () => {
-        const { testStore } = this.props;
-        const webServiceId = getWebServiceId();
-        testStore.createOne(webServiceId, {
+        const { webServiceStore, testStore } = this.props;
+        const { webService } = webServiceStore;
+        testStore.createOne(webService.id, {
             "method": "get",
             "schedule": "5m",
             "assertion": {
