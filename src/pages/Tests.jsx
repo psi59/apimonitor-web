@@ -32,8 +32,16 @@ class Test extends React.Component {
         const { testStore, resultStore } = this.props;
         const testId = props.match.params.testId;
         testStore.findById(testId);
-        resultStore.findByTestId(testId)
+        resultStore.findByTestId(testId);
+        setInterval(this.getResults,  30*1000);
     }
+
+    getResults = () => {
+        const { testStore, resultStore } = this.props;
+        const testId = this.props.match.params.testId;
+        resultStore.findByTestId(testId);
+        console.log(0, "Tick");
+    };
 
     updateTestDescription = (text) => {
         const { testStore } = this.props;

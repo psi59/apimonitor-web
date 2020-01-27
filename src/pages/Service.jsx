@@ -1,5 +1,5 @@
 import React from 'react'
-import {Redirect, Link, withRouter} from 'react-router-dom'
+import {Redirect, withRouter} from 'react-router-dom'
 import Avatar from "../components/Avatar";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlay, faPlus, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
@@ -9,7 +9,6 @@ import {inject, observer} from "mobx-react";
 import queryString from "query-string";
 import {getWebServiceId} from "../helpers/utils/path";
 import ResultList from "../components/ResultList";
-import TestModel from "../stores/models/TestModel";
 
 const tabs = {
     Overview: "Overview",
@@ -200,7 +199,15 @@ class Overview extends React.Component {
         const { resultStore } = this.props;
         const webServiceId = getWebServiceId();
         resultStore.findByWebServiceId(webServiceId);
+        setInterval(this.getResults, 30*1000);
     }
+
+    getResults = () => {
+        const { resultStore } = this.props;
+        const webServiceId = getWebServiceId();
+        resultStore.findByWebServiceId(webServiceId);
+        console.log(0, "Tick");
+    };
 
     render() {
         const { testList } = this.props.testStore;
