@@ -138,6 +138,16 @@ class TestStore {
             schedule: schedule,
         });
     }
+
+    @action updateBodyInParameters(body) {
+        this.test = new TestModel({
+            ...this.test,
+            parameters: {
+                ...this.test.parameters,
+                body: body,
+            },
+        });
+    }
 }
 
 export default new TestStore();

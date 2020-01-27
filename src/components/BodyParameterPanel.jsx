@@ -21,10 +21,10 @@ const rawContentType = "raw";
 
 const rawContentTypes = [
     "application/json",
-    "application/graphql",
-    "text/xml",
-    "text/html",
-    "text/plain",
+    // "application/graphql",
+    // "text/xml",
+    // "text/html",
+    // "text/plain",
 ];
 
 @inject("testStore")
@@ -72,10 +72,7 @@ class BodyParameterPanel extends React.Component {
         const { test } = testStore;
         const { parameters, contentType } = test;
         if (this.state.contentType === rawContentType && parameters) {
-            // return <BodyEditor body={parameters.body} contentType={contentType} />
-            return <BodyEditor body={{test: 1}} contentType={contentType} />
-        } else {
-            return <div>a</div>
+            return <BodyEditor body={parameters.body} contentType={contentType} />
         }
     };
 
@@ -106,24 +103,24 @@ class BodyParameterPanel extends React.Component {
                                 onClick={this.setContentType(rawContentType)}
                             /> Raw
                         </label>
-                        <label className="radio">
-                            <input
-                                className="u-m-r-5"
-                                type="radio"
-                                name="answer"
-                                checked={this.isContentTypeChecked(formDataFormUrlEncodedContentType)}
-                                onClick={this.setContentType(formDataFormUrlEncodedContentType)}
-                            /> x-www-form-urlencoded
-                        </label>
-                        <label className="radio">
-                            <input
-                                className="u-m-r-5"
-                                type="radio"
-                                name="answer"
-                                checked={this.isContentTypeChecked(formDataContentType)}
-                                onClick={this.setContentType(formDataContentType)}
-                            /> multipart/form-data
-                        </label>
+                        {/*<label className="radio">*/}
+                        {/*    <input*/}
+                        {/*        className="u-m-r-5"*/}
+                        {/*        type="radio"*/}
+                        {/*        name="answer"*/}
+                        {/*        checked={this.isContentTypeChecked(formDataFormUrlEncodedContentType)}*/}
+                        {/*        onClick={this.setContentType(formDataFormUrlEncodedContentType)}*/}
+                        {/*    /> x-www-form-urlencoded*/}
+                        {/*</label>*/}
+                        {/*<label className="radio">*/}
+                        {/*    <input*/}
+                        {/*        className="u-m-r-5"*/}
+                        {/*        type="radio"*/}
+                        {/*        name="answer"*/}
+                        {/*        checked={this.isContentTypeChecked(formDataContentType)}*/}
+                        {/*        onClick={this.setContentType(formDataContentType)}*/}
+                        {/*    /> multipart/form-data*/}
+                        {/*</label>*/}
                     </div>
                     <div className="u-m-b-25">
                         {this.renderBodyEditor()}
@@ -194,6 +191,23 @@ class BodyEditor extends React.Component {
         }
     };
 
+    updateBody = () => {
+        const { testStore } = this.props;
+        const { body } = this.state;
+        const bodyJson = JSON.parse(body);
+        testStore.updateBodyInParameters(bodyJson);
+        const { test } = testStore;
+
+        testStore.updateOne(test).then(() => {
+            console.log("o");
+            this.setState({
+                isEditMode: false,
+            })
+        }).catch(e => {
+            console.log(e);
+        });
+    };
+
     render() {
         const { testStore } = this.props;
         const { test } = testStore;
@@ -215,6 +229,7 @@ class BodyEditor extends React.Component {
                 }}>
                     {isEditMode ? <CodeMirror
                         value={body}
+                        onChange={(body) => {this.setState({body: body})}}
                         options={{
                             mode: this.getCodeMirrorMode(),
                             theme: 'solarized',
@@ -237,7 +252,10 @@ class BodyEditor extends React.Component {
                         </button>
                     </div>
                     <div className="level-right">
-                        <button className="button is-success">
+                        <button
+                            className="button is-success"
+                            onClick={this.updateBody}
+                        >
                             <span className="has-text-weight-semibold">Save request body</span>
                         </button>
                     </div>
