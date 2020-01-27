@@ -76,7 +76,9 @@ class Service extends React.Component {
         testStore.createOne(webServiceId, {
             "method": "get",
             "schedule": "5m",
-            "assertion": {},
+            "assertion": {
+                "statusCode": 200
+            },
             "contentType": "application/json",
             "timeout": 1,
             "path": "/",

@@ -9,6 +9,7 @@ class ResultListItemModel {
     @observable statusCode;
     @observable responseTime;
     @observable testedAt;
+    @observable response;
 
     constructor(data) {
         if (!data)
@@ -20,6 +21,7 @@ class ResultListItemModel {
         this.statusCode = data.statusCode;
         this.responseTime = data.responseTime;
         this.testedAt = data.testedAt;
+        this.response = data.response;
     }
 }
 

@@ -199,7 +199,6 @@ class BodyEditor extends React.Component {
         const { test } = testStore;
 
         testStore.updateOne(test).then(() => {
-            console.log("o");
             this.setState({
                 isEditMode: false,
             })
