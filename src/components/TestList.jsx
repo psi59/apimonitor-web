@@ -58,6 +58,15 @@ class TestListItem extends React.Component {
         });
     };
 
+    execute = () => {
+        const { testStore, test } = this.props;
+        testStore.executeOne(test).then(() => {
+            console.log(0, "OK");
+        }).catch((e) => {
+            console.log("error=", e);
+        });
+    };
+
     render() {
         const {test, isShort} = this.props;
 
@@ -74,7 +83,10 @@ class TestListItem extends React.Component {
                     </div>
                     <div className="level-right">
                         <div className="level-item">
-                            <button className="button is-text is-small has-text-success">
+                            <button
+                                className="button is-text is-small has-text-success"
+                                onClick={this.execute}
+                            >
                                 <FontAwesomeIcon icon={faPlay} />
                             </button>
                         </div>

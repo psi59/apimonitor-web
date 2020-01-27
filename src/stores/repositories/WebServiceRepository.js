@@ -23,6 +23,10 @@ class WebServiceRepository {
     createOne(webService) {
         return axios.post(`${this.URL}/webservices`, webService)
     }
+
+    executeOne(webService) {
+        return axios.get(`${this.URL}/webservices/${webService.id}/execute`)
+    }
 }
 
 export default new WebServiceRepository();

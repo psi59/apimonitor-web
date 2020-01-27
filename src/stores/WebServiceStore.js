@@ -75,7 +75,18 @@ class WebServiceStore {
             const { data, status } = e.response;
             return new RepositoryResponseModel(data, status);
         }
-    })
+    });
+
+    executeOne = flow(function * (webService) {
+        try {
+            const {data, status} = yield webServiceRepository.executeOne(webService);
+            console.log(data);
+            return null;
+        } catch (e) {
+            console.log('API Error:', e.response);
+            return e.response;
+        }
+    });
 
     @action removeWebServiceInList(webService) {
         this.webServiceList.items.remove(webService);

@@ -92,6 +92,16 @@ class Service extends React.Component {
         })
     };
 
+    execute = () => {
+        const { webServiceStore } = this.props;
+        const { webService } = webServiceStore;
+        webServiceStore.executeOne(webService).then(() => {
+            console.log(0, "OK");
+        }).catch((e) => {
+            console.log("error=", e);
+        });
+    };
+
     render() {
         const { webServiceStore } = this.props;
         const { webService } = webServiceStore;
@@ -133,7 +143,10 @@ class Service extends React.Component {
                             </button>
                         </div>
                         <div className="level-item">
-                            <button className="button is-success is-outlined">
+                            <button
+                                className="button is-success is-outlined"
+                                onClick={this.execute}
+                            >
                                 <span className="icon is-small">
                                   <FontAwesomeIcon icon={faPlay} />
                                 </span>
