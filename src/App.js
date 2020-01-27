@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import 'bulma/css/bulma.css'
+import 'bulma-addons/css/addons/checkbox.css'
 import './spacing.css'
 
 import {

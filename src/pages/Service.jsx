@@ -84,6 +84,7 @@ class Service extends React.Component {
             "path": "/",
             "description": "root test",
             "name": "OK",
+            "alerts": [],
             "parameters": {}
         }).then((test) => {
             console.log(test);

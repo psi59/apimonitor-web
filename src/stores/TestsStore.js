@@ -148,6 +148,14 @@ class TestStore {
             },
         });
     }
+
+    @action updateAlerts(alerts) {
+        console.log(1, this.test);
+        this.test = new TestModel({
+            ...this.test,
+            alerts: alerts,
+        });
+    }
 }
 
 export default new TestStore();

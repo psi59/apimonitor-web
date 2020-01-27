@@ -3,6 +3,7 @@ import {inject, observer} from "mobx-react";
 import ParameterPanel from "./ParameterPanel";
 import BodyParameterPanel from "./BodyParameterPanel";
 import Dropdown from "./Dropdown";
+import AlertParameterPanel from "./AlertParameterPanel";
 const schedules = [
     "1m",
     "5m",
@@ -79,6 +80,12 @@ class TestSettingPanel extends React.Component {
                         header="Query parameters"
                         parameterName={"query"}
                     />
+                </div>
+                <div
+                    className="panel-block"
+                    style={panelBlockStyle}
+                >
+                    <AlertParameterPanel />
                 </div>
                 <div
                     className="panel-block"

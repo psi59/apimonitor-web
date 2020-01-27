@@ -14,6 +14,7 @@ class TestModel {
     @observable schedule;
     @observable timeout;
     @observable assertion;
+    @observable alerts;
     @observable createdAt;
     @observable modifiedAt;
 
@@ -31,6 +32,7 @@ class TestModel {
         this.schedule = data.schedule;
         this.timeout = data.timeout;
         this.assertion = data.assertion;
+        this.alerts = data.alerts;
         this.createdAt = data.createdAt;
         this.modifiedAt = data.modifiedAt;
     }
