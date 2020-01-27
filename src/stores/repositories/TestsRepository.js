@@ -50,4 +50,4 @@ class TestRepository {
     }
 }
 
-export default new TestRepository();
+export default new TestRepository(process.env.AM_API_URL);

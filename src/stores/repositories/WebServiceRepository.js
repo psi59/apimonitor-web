@@ -28,4 +28,4 @@ class WebServiceRepository {
     }
 }
 
-export default new WebServiceRepository();
+export default new WebServiceRepository(process.env.AM_API_URL);

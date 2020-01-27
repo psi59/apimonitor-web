@@ -16,4 +16,4 @@ class ResultRepository {
     }
 }
 
-export default new ResultRepository();
+export default new ResultRepository(process.env.AM_API_URL);
